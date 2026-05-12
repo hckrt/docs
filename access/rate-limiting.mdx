@@ -1,0 +1,27 @@
+---
+title: "Configure rate limiting for your HackGATE site"
+description: "Set a rate limiting policy on your HackGATE site to control request frequency and protect your origin from accidental or deliberate overload."
+---
+
+Rate limiting controls how many requests researchers can send within a given time window. Applying a policy to your HackGATE site protects your origin server from being overwhelmed — whether by accident during active testing or by a researcher sending an unusually high volume of requests.
+
+## Set a rate limiting policy
+
+Rate limiting is configured per site by providing a policy name. The policy name maps to a rate limiter configuration on the proxy — for example, `"fixed"` applies a fixed-window policy.
+
+```bash
+curl -X POST https://admin.hackgate.io/api/sites/setRateLimiting \
+  -H "Authorization: Bearer <token>" \
+  -H "Content-Type: application/json" \
+  -d '{"id": "SITE_ID", "rateLimit": "fixed"}'
+```
+
+The response returns the updated site object with the new `rateLimit` value.
+
+<Tip>
+  Use rate limiting alongside block rules to prevent overload on sensitive endpoints. Block rules stop requests from reaching restricted paths entirely, while rate limiting controls the overall request volume across the site.
+</Tip>
+
+<Note>
+  Contact [support@hckrt.com](mailto:support@hckrt.com) for information about the rate limiting policy names available on your plan.
+</Note>

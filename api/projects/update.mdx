@@ -1,0 +1,309 @@
+---
+title: "PUT /api/projects and project items — update records"
+description: "PUT /api/projects updates a project's metadata and timeline. PUT /api/projects/updateProjectItem updates the name, type, and location of an item."
+---
+
+Use these endpoints to modify existing projects and their associated items. `PUT /api/projects` performs a full replacement of a project record. `POST /api/projects/createProjectItem` adds a new site or target to an existing project. `PUT /api/projects/updateProjectItem` updates an item's name, type, access model, and location.
+
+<Tabs>
+  <Tab title="Update project">
+
+## PUT /api/projects
+
+```
+PUT https://admin.hackgate.io/api/projects
+```
+
+Replaces an existing project record with the values you provide. Send the full project object — including all fields returned by `GET /api/projects/{id}` — with your changes applied. Omitting optional fields sets them to `null`.
+
+### Request
+
+<ParamField header="Authorization" type="string" required>
+  Bearer token. See [Authentication](/api/authentication).
+</ParamField>
+
+<ParamField header="Content-Type" type="string" required>
+  Must be `application/json`.
+</ParamField>
+
+### Body parameters
+
+<ParamField body="id" type="string" required>
+  The unique identifier of the project to update.
+</ParamField>
+
+<ParamField body="orgId" type="string" required>
+  The organization that owns the project.
+</ParamField>
+
+<ParamField body="name" type="string" required>
+  Human-readable project name.
+</ParamField>
+
+<ParamField body="description" type="string">
+  Description of the project's scope or purpose.
+</ParamField>
+
+<ParamField body="note" type="string">
+  Free-text internal notes.
+</ParamField>
+
+<ParamField body="launchDate" type="string">
+  ISO 8601 date-time when the engagement starts.
+</ParamField>
+
+<ParamField body="endDate" type="string">
+  ISO 8601 date-time when the engagement ends.
+</ParamField>
+
+<ParamField body="creationDate" type="string">
+  ISO 8601 date-time when the project was originally created. Pass through unchanged.
+</ParamField>
+
+<ParamField body="createdBy" type="string">
+  Identifier of the user who created the project. Pass through unchanged.
+</ParamField>
+
+<ParamField body="accessType" type="string">
+  Access model for the engagement (for example, `authenticated` or `unauthenticated`).
+</ParamField>
+
+<ParamField body="location" type="string">
+  Geographic or network location context.
+</ParamField>
+
+<ParamField body="owner" type="string">
+  Person or team responsible for the project.
+</ParamField>
+
+<ParamField body="reportDeadline" type="string">
+  ISO 8601 date-time by which the final report is due.
+</ParamField>
+
+<ParamField body="retestingEnd" type="string">
+  ISO 8601 date-time when the retesting window closes.
+</ParamField>
+
+<ParamField body="retestingLaunch" type="string">
+  ISO 8601 date-time when retesting begins.
+</ParamField>
+
+<ParamField body="type" type="string">
+  Engagement type, such as `pentest` or `bug-bounty`.
+</ParamField>
+
+<ParamField body="vendor" type="string">
+  Security vendor or testing firm assigned to the project.
+</ParamField>
+
+<ParamField body="isRetestNeeded" type="boolean">
+  Whether a retesting cycle is required after the initial engagement.
+</ParamField>
+
+### Response
+
+Returns the updated project object.
+
+### Example
+
+```bash
+curl -X PUT https://admin.hackgate.io/api/projects \
+  -H "Authorization: Bearer <token>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "id": "proj_abc123",
+    "orgId": "org_xyz",
+    "name": "Q3 Web Application Pentest",
+    "description": "Full-scope penetration test of the customer portal.",
+    "note": "Scoping call completed.",
+    "launchDate": "2025-07-01T09:00:00Z",
+    "endDate": "2025-07-14T17:00:00Z",
+    "creationDate": "2025-06-15T12:00:00Z",
+    "createdBy": "user_123",
+    "accessType": "authenticated",
+    "location": "US-East",
+    "owner": "security@example.com",
+    "reportDeadline": "2025-07-21T17:00:00Z",
+    "retestingEnd": "2025-08-04T17:00:00Z",
+    "retestingLaunch": "2025-07-28T09:00:00Z",
+    "type": "pentest",
+    "vendor": "AcmeSec",
+    "isRetestNeeded": true
+  }'
+```
+
+  </Tab>
+  <Tab title="Create project item">
+
+## POST /api/projects/createProjectItem
+
+```
+POST https://admin.hackgate.io/api/projects/createProjectItem
+```
+
+Adds a new item (a site or target) to an existing project. Items represent the individual in-scope assets for an engagement.
+
+### Request
+
+<ParamField header="Authorization" type="string" required>
+  Bearer token. See [Authentication](/api/authentication).
+</ParamField>
+
+<ParamField header="Content-Type" type="string" required>
+  Must be `application/json`.
+</ParamField>
+
+### Body parameters
+
+<ParamField body="name" type="string" required>
+  Name of the item, typically matching the HackGATE site name or target URL.
+</ParamField>
+
+<ParamField body="projectId" type="string" required>
+  The unique identifier of the project to attach this item to.
+</ParamField>
+
+### Response
+
+Returns the newly created project item object.
+
+<ResponseField name="id" type="string">
+  Unique identifier for the item.
+</ResponseField>
+
+<ResponseField name="orgId" type="string">
+  The organization that owns the item.
+</ResponseField>
+
+<ResponseField name="projectId" type="string">
+  The project this item belongs to.
+</ResponseField>
+
+<ResponseField name="name" type="string">
+  Name of the item.
+</ResponseField>
+
+<ResponseField name="creationDate" type="string">
+  ISO 8601 date-time when the item was created.
+</ResponseField>
+
+<ResponseField name="createdBy" type="string">
+  Identifier of the user who created the item.
+</ResponseField>
+
+<ResponseField name="accessType" type="string">
+  Access model. `null` until updated.
+</ResponseField>
+
+<ResponseField name="location" type="string">
+  Location context. `null` until updated.
+</ResponseField>
+
+<ResponseField name="type" type="string">
+  Item type. `null` until updated.
+</ResponseField>
+
+### Example
+
+```bash
+curl -X POST https://admin.hackgate.io/api/projects/createProjectItem \
+  -H "Authorization: Bearer <token>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "customer-portal",
+    "projectId": "proj_abc123"
+  }'
+```
+
+```json
+{
+  "id": "item_456",
+  "orgId": "org_xyz",
+  "projectId": "proj_abc123",
+  "name": "customer-portal",
+  "creationDate": "2025-06-16T10:30:00Z",
+  "createdBy": "user_123",
+  "accessType": null,
+  "location": null,
+  "type": null
+}
+```
+
+  </Tab>
+  <Tab title="Update project item">
+
+## PUT /api/projects/updateProjectItem
+
+```
+PUT https://admin.hackgate.io/api/projects/updateProjectItem
+```
+
+Updates the metadata of an existing project item. Use this to set or change the item's name, access model, location, and type.
+
+### Request
+
+<ParamField header="Authorization" type="string" required>
+  Bearer token. See [Authentication](/api/authentication).
+</ParamField>
+
+<ParamField header="Content-Type" type="string" required>
+  Must be `application/json`.
+</ParamField>
+
+### Body parameters
+
+<ParamField body="id" type="string" required>
+  The unique identifier of the item to update.
+</ParamField>
+
+<ParamField body="name" type="string" required>
+  Updated name for the item.
+</ParamField>
+
+<ParamField body="accessType" type="string">
+  Access model for this item (for example, `authenticated` or `unauthenticated`).
+</ParamField>
+
+<ParamField body="location" type="string">
+  Geographic or network location for the item.
+</ParamField>
+
+<ParamField body="type" type="string">
+  Item type (for example, `web`, `api`, or `mobile`).
+</ParamField>
+
+### Response
+
+Returns the updated project item object.
+
+### Example
+
+```bash
+curl -X PUT https://admin.hackgate.io/api/projects/updateProjectItem \
+  -H "Authorization: Bearer <token>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "id": "item_456",
+    "name": "customer-portal",
+    "accessType": "authenticated",
+    "location": "US-East",
+    "type": "web"
+  }'
+```
+
+```json
+{
+  "id": "item_456",
+  "orgId": "org_xyz",
+  "projectId": "proj_abc123",
+  "name": "customer-portal",
+  "creationDate": "2025-06-16T10:30:00Z",
+  "createdBy": "user_123",
+  "accessType": "authenticated",
+  "location": "US-East",
+  "type": "web"
+}
+```
+
+  </Tab>
+</Tabs>

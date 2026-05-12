@@ -1,0 +1,137 @@
+---
+title: "GET /api/sites/disable/{id} — deactivate a site"
+description: "GET /api/sites/disable/{id} takes a HackGATE site offline. The proxied subdomain returns a default page until the site is re-enabled."
+---
+
+Deactivates a HackGATE site. The proxy subdomain immediately stops forwarding traffic to your origin and serves a default offline page to any researcher who connects. A **Stopped** event is written to the site's activity log.
+
+## Request
+
+```
+GET https://admin.hackgate.io/api/sites/disable/{id}
+```
+
+### Headers
+
+<ParamField header="Authorization" type="string" required>
+  Bearer token. Example: `Bearer <token>`
+</ParamField>
+
+### Path parameters
+
+<ParamField path="id" type="string" required>
+  The UUID of the site to deactivate.
+</ParamField>
+
+## Errors
+
+| Condition | Status | `title` |
+|-----------|--------|---------|
+| Site is already inactive | `400` | `"Site is already disabled"` |
+| Site not found | `404` | Site not found message |
+
+## Response
+
+Returns the updated site object with `isActive` set to `false`.
+
+<ResponseField name="id" type="string" required>
+  Unique identifier for the site (UUID).
+</ResponseField>
+
+<ResponseField name="originName" type="string" required>
+  The origin URL being proxied.
+</ResponseField>
+
+<ResponseField name="hackgatedName" type="string" required>
+  The `hackgate.io` subdomain that now serves the offline page.
+</ResponseField>
+
+<ResponseField name="isActive" type="boolean" required>
+  `false` after a successful disable request.
+</ResponseField>
+
+<ResponseField name="orgId" type="string" required>
+  Organization ID that owns this site.
+</ResponseField>
+
+<ResponseField name="cretedByUserId" type="string" required>
+  User ID of the account that created the site.
+</ResponseField>
+
+<ResponseField name="creationdDate" type="string" required>
+  ISO 8601 timestamp of when the site was created.
+</ResponseField>
+
+<ResponseField name="hasCustomList" type="boolean" required>
+  Whether a custom researcher allowlist is enabled.
+</ResponseField>
+
+<ResponseField name="isDeploymentProgress" type="boolean" required>
+  Deployment state at the time of the request.
+</ResponseField>
+
+<ResponseField name="startDate" type="string">
+  Scheduled activation date, if set. `null` otherwise.
+</ResponseField>
+
+<ResponseField name="stopDate" type="string">
+  Scheduled deactivation date, if set. `null` otherwise.
+</ResponseField>
+
+<ResponseField name="credentials" type="string">
+  Test credentials for researchers. `null` if not configured.
+</ResponseField>
+
+<ResponseField name="instructions" type="string">
+  Testing instructions for researchers. `null` if not configured.
+</ResponseField>
+
+<ResponseField name="rateLimit" type="string">
+  Rate limiting rule string. `null` if not configured.
+</ResponseField>
+
+<ResponseField name="blockList" type="string">
+  JSON-encoded block rules. `null` if not configured.
+</ResponseField>
+
+## Example
+
+<RequestExample>
+
+```bash cURL
+curl https://admin.hackgate.io/api/sites/disable/a1b2c3d4-e5f6-7890-abcd-ef1234567890 \
+  -H "Authorization: Bearer <token>"
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{
+  "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+  "originName": "https://www.example.com",
+  "hackgatedName": "www-myorg.hackgate.io",
+  "isActive": false,
+  "orgId": "org-uuid",
+  "cretedByUserId": "user-uuid",
+  "creationdDate": "2024-06-01T10:00:00Z",
+  "hasCustomList": false,
+  "isDeploymentProgress": false,
+  "startDate": null,
+  "stopDate": null,
+  "credentials": null,
+  "instructions": null,
+  "rateLimit": null,
+  "blockList": null
+}
+```
+
+```json 400
+{
+  "title": "Site is already disabled",
+  "status": 400
+}
+```
+
+</ResponseExample>

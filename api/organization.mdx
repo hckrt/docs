@@ -1,0 +1,46 @@
+---
+title: "GET /api/organization — organization details"
+description: "GET /api/organization returns your organization's ID and available credit balance. Credits determine your HackGATE usage capacity."
+---
+
+Use this endpoint to retrieve the core details of the organization associated with your Bearer token. The response includes the organization's unique identifier and its current credit balance. Credits represent your available usage capacity — contact the Hackrate team to top up your balance.
+
+## Endpoint
+
+```
+GET https://admin.hackgate.io/api/organization
+```
+
+## Request
+
+<ParamField header="Authorization" type="string" required>
+  Bearer token. See [Authentication](/api/authentication).
+</ParamField>
+
+## Response
+
+<ResponseField name="id" type="string">
+  The unique identifier for your organization.
+</ResponseField>
+
+<ResponseField name="credits" type="number">
+  The number of credits currently available to your organization. Credits are consumed as researcher traffic passes through HackGATE.
+</ResponseField>
+
+<Note>
+  To purchase additional credits, contact [support@hckrt.com](mailto:support@hckrt.com) or [sales@hckrt.com](mailto:sales@hckrt.com).
+</Note>
+
+## Example
+
+```bash
+curl https://admin.hackgate.io/api/organization \
+  -H "Authorization: Bearer <token>"
+```
+
+```json
+{
+  "id": "org_xyz",
+  "credits": 5000
+}
+```

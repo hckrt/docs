@@ -1,0 +1,58 @@
+---
+title: "Authenticate with the HackGATE API"
+description: "HackGATE supports two authentication methods: Clerk JWT tokens for interactive use and organization API keys for automated workflows."
+---
+
+Every request to the HackGATE API requires a valid token passed in the `Authorization` header using the Bearer scheme:
+
+```
+Authorization: Bearer <token>
+```
+
+HackGATE supports two token types. The API automatically detects which method you are using based on the token format.
+
+## Authentication methods
+
+**Clerk JWT** tokens are issued by the Admin Center frontend session. They are short-lived and well-suited for interactive use, ad-hoc API calls, or testing from your terminal.
+
+**Organization API keys** are long-lived tokens that start with `ak_live_`. They are scoped to your organization and intended for CI/CD pipelines, automation scripts, and any non-interactive workflow where a user session is not available.
+
+<Note>
+  API keys are scoped to your organization. Every request must carry a valid token that includes your organization context. Requests without a valid org ID claim will be rejected with a `401` error.
+</Note>
+
+## Example requests
+
+<Tabs>
+  <Tab title="Clerk JWT">
+    Retrieve your JWT from the Admin Center session (available in your browser's local storage or via the Clerk SDK). Use it as a Bearer token:
+
+    ```bash
+    curl https://admin.hackgate.io/api/sites \
+      -H "Authorization: Bearer eyJhbGciOiJSUzI1NiJ9..."
+    ```
+
+    JWT tokens expire with your session. If you receive a `401`, sign in again at [admin.hackgate.io](https://admin.hackgate.io) to get a fresh token.
+  </Tab>
+  <Tab title="Organization API key">
+    Generate an organization API key in the Admin Center under **Settings > API Keys**. API keys begin with `ak_live_`:
+
+    ```bash
+    curl https://admin.hackgate.io/api/sites \
+      -H "Authorization: Bearer ak_live_XXXXXXXXXXXX"
+    ```
+
+    Store your API key securely. Treat it like a password — do not commit it to source control or expose it in client-side code.
+  </Tab>
+</Tabs>
+
+## Troubleshooting authentication errors
+
+A `401 Unauthorized` response means one of the following:
+
+- Your token is missing from the request
+- Your JWT has expired — sign in again to get a fresh token
+- Your API key has been revoked or does not exist
+- Your token does not carry an organization ID claim — ensure you are using a token generated under the correct organization context
+
+If you are using an organization API key and receiving `401` errors, verify the key was created for the organization you are targeting and that it has not been rotated or deleted in **Settings > API Keys**.

@@ -1,0 +1,116 @@
+---
+title: "Create and manage HackGATE projects via API"
+description: "Use the HackGATE Projects API to create security programs, update timelines and metadata, and organize project items for each engagement."
+---
+
+Use the Projects API to create security programs, update their metadata, and manage the individual project items that represent your assets.
+
+## List projects
+
+Retrieve all projects for your organization.
+
+```bash
+curl https://admin.hackgate.io/api/projects \
+  -H "Authorization: Bearer <token>"
+```
+
+## Create a project
+
+<Steps>
+  <Step title="Send the create request">
+    POST to `/api/projects` with a name and optional description, notes, and date range.
+
+    ```bash
+    curl -X POST https://admin.hackgate.io/api/projects \
+      -H "Authorization: Bearer <token>" \
+      -H "Content-Type: application/json" \
+      -d '{
+        "name": "Q3 Bug Bounty 2024",
+        "description": "External bug bounty for web application",
+        "note": "Focus on API endpoints",
+        "launchDate": "2024-07-01T00:00:00Z",
+        "endDate": "2024-09-30T23:59:59Z"
+      }'
+    ```
+  </Step>
+  <Step title="Receive the full project object">
+    The response includes the generated `id` and all fields set by the API, including `orgId` and `creationDate`. Save the `id` — you will need it when updating the project or creating project items.
+  </Step>
+</Steps>
+
+## Update a project
+
+Project updates use a full-object replacement. Include all fields you want to retain, not just the ones you are changing.
+
+```bash
+curl -X PUT https://admin.hackgate.io/api/projects \
+  -H "Authorization: Bearer <token>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "id": "PROJECT_ID",
+    "orgId": "ORG_ID",
+    "name": "Q3 Bug Bounty 2024",
+    "description": "Updated description",
+    "owner": "security-team@example.com",
+    "vendor": "Hackrate",
+    "isRetestNeeded": true,
+    "reportDeadline": "2024-10-15T00:00:00Z",
+    "retestingLaunch": "2024-10-16T00:00:00Z",
+    "retestingEnd": "2024-10-31T00:00:00Z"
+  }'
+```
+
+## Get a single project
+
+```bash
+curl https://admin.hackgate.io/api/projects/PROJECT_ID \
+  -H "Authorization: Bearer <token>"
+```
+
+## Project items
+
+### List all project items
+
+```bash
+curl https://admin.hackgate.io/api/projects/getProjectItems \
+  -H "Authorization: Bearer <token>"
+```
+
+### Get a single project item
+
+```bash
+curl https://admin.hackgate.io/api/projects/getProjectItem/ITEM_ID \
+  -H "Authorization: Bearer <token>"
+```
+
+### Create a project item
+
+Provide the item name and the `projectId` of the parent project.
+
+```bash
+curl -X POST https://admin.hackgate.io/api/projects/createProjectItem \
+  -H "Authorization: Bearer <token>" \
+  -H "Content-Type: application/json" \
+  -d '{"name": "Main Web Application", "projectId": "PROJECT_ID"}'
+```
+
+### Update a project item
+
+Use the item's `id` to set its type, access mode, and location.
+
+```bash
+curl -X PUT https://admin.hackgate.io/api/projects/updateProjectItem \
+  -H "Authorization: Bearer <token>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "id": "ITEM_ID",
+    "name": "API Endpoints",
+    "type": "API",
+    "accessType": "authenticated",
+    "location": "https://api.example.com"
+  }'
+```
+
+<Note>
+  Project item updates replace the item's editable fields (`name`, `type`, `accessType`, `location`). The `projectId` and `orgId` are not modified by item updates.
+</Note>

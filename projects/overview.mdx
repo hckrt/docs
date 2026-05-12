@@ -1,0 +1,48 @@
+---
+title: "Organize security programs with HackGATE Projects"
+description: "HackGATE Projects let you group related sites and assets under a named security program with timelines, owners, and vendor metadata."
+---
+
+A HackGATE Project is a container that organizes multiple HackGATE sites and assets under a named security program — for example, "Q3 Bug Bounty" or "Annual Pentest". Instead of managing sites in isolation, you attach them to a project that carries program-level context: timelines, owners, vendor details, and retest schedules.
+
+## Key fields
+
+| Field | Description |
+|---|---|
+| `name` | Display name for the security program. |
+| `description` | Summary of the program's scope and goals. |
+| `note` | Internal notes, such as focus areas or constraints. |
+| `launchDate` / `endDate` | Program start and end dates. |
+| `owner` | Email or identifier of the team or person responsible. |
+| `vendor` | Name of the security vendor conducting the engagement. |
+| `accessType` | How access to program assets is granted. |
+| `location` | Primary target location or environment. |
+| `reportDeadline` | Deadline for the final security report. |
+| `isRetestNeeded` | Whether a retest engagement is required after remediation. |
+| `retestingLaunch` / `retestingEnd` | Start and end dates for the retest window. |
+
+## Project items
+
+Project items are the sub-assets within a project — for example, specific web applications, API endpoints, or IP ranges. Each item has its own metadata that describes its nature and how it is accessed.
+
+| Field | Description |
+|---|---|
+| `name` | Display name for the asset. |
+| `type` | Asset category, such as `API`, `Web`, or `Network`. |
+| `accessType` | Whether access is `authenticated` or `unauthenticated`. |
+| `location` | URL, IP address, or other locator for the asset. |
+
+You can list, create, and update project items independently of the parent project, which lets you track the status of individual assets across a program's lifecycle.
+
+## Example use cases
+
+- **Bug bounty program**: Group all HackGATE sites for a single bug bounty round under one project with a shared `launchDate`, `endDate`, and `owner`.
+- **Retest tracking**: Set `isRetestNeeded: true` after a pentest concludes and use `retestingLaunch` and `retestingEnd` to schedule and track the remediation retest.
+- **Vendor coordination**: Record the security vendor in `vendor` so your team always knows which firm conducted the engagement.
+- **Asset inventory**: Use project items to maintain a list of specific endpoints and applications tested during the program.
+
+<CardGroup cols={2}>
+  <Card title="Create and manage projects" icon="wrench" href="/projects/manage">
+    Use the API to create projects, update timelines, and manage project items.
+  </Card>
+</CardGroup>

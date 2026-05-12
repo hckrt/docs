@@ -1,0 +1,136 @@
+---
+title: "WAF analytics API — attack types and rule events"
+description: "Query ModSecurity WAF events on your HackGATE site: triggered rule messages, attack type breakdown, and event timeline by time range."
+---
+
+HackGATE's managed proxy runs ModSecurity as its Web Application Firewall. These endpoints expose WAF telemetry so you can track which rules fired, which attack categories were detected, and how WAF activity changed over time. Use them to distinguish between genuine attack patterns and researcher noise during an engagement.
+
+All WAF analytics endpoints require a valid Bearer token in the `Authorization` header.
+
+## Common query parameters
+
+<ParamField query="url" type="string" required>
+  The `hackgatedName` of the HackGATE site to query.
+</ParamField>
+
+<ParamField query="gte" type="string" required>
+  Start of the time range as an ISO 8601 date-time string (for example, `2025-07-01T00:00:00Z`).
+</ParamField>
+
+<ParamField query="lte" type="string" required>
+  End of the time range as an ISO 8601 date-time string (for example, `2025-07-14T23:59:59Z`).
+</ParamField>
+
+---
+
+<Tabs>
+  <Tab title="WAF messages">
+
+## GET /api/analytics/getWAFMessages
+
+```
+GET https://admin.hackgate.io/api/analytics/getWAFMessages
+```
+
+Returns the individual ModSecurity rule messages triggered on the site within the time range. Each record represents a rule match, including the rule ID, message, and the request that triggered it.
+
+```bash
+curl "https://admin.hackgate.io/api/analytics/getWAFMessages?url=my-site&gte=2025-07-01T00:00:00Z&lte=2025-07-14T23:59:59Z" \
+  -H "Authorization: Bearer <token>"
+```
+
+  </Tab>
+  <Tab title="Attack types">
+
+## GET /api/analytics/getWAFAttackTypes
+
+```
+GET https://admin.hackgate.io/api/analytics/getWAFAttackTypes
+```
+
+Returns a breakdown of detected attack categories with counts for each type. Attack categories are returned as human-readable strings:
+
+| Attack type |
+|-------------|
+| Cross Site Scripting (XSS) |
+| SQL Injection (SQLi) |
+| Local File Inclusion (LFI) |
+| Remote Code Execution (RCE) |
+| PHP Injection |
+| Remote File Inclusion (RFI) |
+
+```bash
+curl "https://admin.hackgate.io/api/analytics/getWAFAttackTypes?url=my-site&gte=2025-07-01T00:00:00Z&lte=2025-07-14T23:59:59Z" \
+  -H "Authorization: Bearer <token>"
+```
+
+```json
+[
+  { "type": "Cross Site Scripting (XSS)", "count": 142 },
+  { "type": "SQL Injection (SQLi)", "count": 87 },
+  { "type": "Local File Inclusion (LFI)", "count": 31 },
+  { "type": "Remote Code Execution (RCE)", "count": 14 },
+  { "type": "PHP Injection", "count": 9 },
+  { "type": "Remote File Inclusion (RFI)", "count": 3 }
+]
+```
+
+  </Tab>
+  <Tab title="API coverage">
+
+## GET /api/analytics/getAPICoverage
+
+```
+GET https://admin.hackgate.io/api/analytics/getAPICoverage
+```
+
+Returns the set of API paths and HTTP methods that researchers accessed through the proxy, along with request counts. Use this to measure how much of your API surface was exercised during an engagement.
+
+### Query parameters
+
+<ParamField query="url" type="string" required>
+  The `hackgatedName` of the site to query.
+</ParamField>
+
+<ParamField query="gte" type="string" required>
+  Start of the time range as an ISO 8601 date-time string.
+</ParamField>
+
+<ParamField query="lte" type="string" required>
+  End of the time range as an ISO 8601 date-time string.
+</ParamField>
+
+### Response
+
+Returns an array of objects, one per unique path and method combination observed.
+
+<ResponseField name="path" type="string">
+  The URL path that was accessed (for example, `/api/users`).
+</ResponseField>
+
+<ResponseField name="method" type="string">
+  The HTTP method used (for example, `GET`, `POST`).
+</ResponseField>
+
+<ResponseField name="count" type="number">
+  Total number of requests to this path and method combination within the time range.
+</ResponseField>
+
+### Example
+
+```bash
+curl "https://admin.hackgate.io/api/analytics/getAPICoverage?url=my-site&gte=2025-07-01T00:00:00Z&lte=2025-07-14T23:59:59Z" \
+  -H "Authorization: Bearer <token>"
+```
+
+```json
+[
+  { "path": "/api/users", "method": "GET", "count": 214 },
+  { "path": "/api/users", "method": "POST", "count": 42 },
+  { "path": "/api/products/123", "method": "GET", "count": 98 },
+  { "path": "/api/admin/config", "method": "GET", "count": 7 }
+]
+```
+
+  </Tab>
+</Tabs>

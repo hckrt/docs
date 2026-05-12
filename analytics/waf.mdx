@@ -1,0 +1,73 @@
+---
+title: "Review WAF alerts and attack types in HackGATE"
+description: "HackGATE's ModSecurity WAF captures attack attempts on your test environment. Review triggered rules, attack categories, and timelines via the API."
+---
+
+HackGATE includes a ModSecurity WAF that inspects all proxied requests in real time. When a request matches a security rule, the event is logged with the rule message, attack category, and timestamp. Use the WAF analytics endpoints to review what researchers are testing and which attack types are most prevalent.
+
+<Note>
+  WAF events are separate from traffic analytics — they capture rule violations, not all requests.
+</Note>
+
+## Attack types detected
+
+HackGATE classifies WAF events into the following attack categories:
+
+| Category | Description |
+| --- | --- |
+| SQL Injection (SQLi) | Attempts to manipulate database queries |
+| Cross-Site Scripting (XSS) | Injection of client-side scripts |
+| Local File Inclusion (LFI) | Attempts to read files from the server filesystem |
+| Remote Code Execution (RCE) | Attempts to execute arbitrary commands on the server |
+| PHP Injection | Injection of PHP code into request parameters |
+| Remote File Inclusion (RFI) | Attempts to load external files into the application |
+
+## Authentication and parameters
+
+All WAF endpoints require a Bearer token in the `Authorization` header. Each endpoint accepts the same query parameters:
+
+| Parameter | Description |
+| --- | --- |
+| `url` | Your hackgatedName (e.g. `www-myorg.hackgate.net`) |
+| `gte` | Start of the time range as an ISO 8601 date string |
+| `lte` | End of the time range as an ISO 8601 date string |
+
+## WAF rule messages
+
+Returns the top 2,500 triggered ModSecurity rule messages ordered by frequency. Use this to identify the most commonly matched rules and the specific payloads researchers are sending.
+
+```bash
+curl "https://admin.hackgate.io/api/analytics/getWAFMessages?url=www-myorg.hackgate.net&gte=2024-06-01T00:00:00Z&lte=2024-06-30T23:59:59Z" \
+  -H "Authorization: Bearer <token>"
+```
+
+## Attack type breakdown
+
+Returns the total event count per attack category for the selected period.
+
+```bash
+curl "https://admin.hackgate.io/api/analytics/getWAFAttackTypes?url=www-myorg.hackgate.net&gte=2024-06-01T00:00:00Z&lte=2024-06-30T23:59:59Z" \
+  -H "Authorization: Bearer <token>"
+```
+
+<Tip>
+  WAF data helps you understand which attack categories researchers are focusing on, so you can prioritize fixes.
+</Tip>
+
+## Attack timeline (12-hour buckets)
+
+Returns the count of WAF events over time, bucketed into 12-hour intervals. Use this to correlate spikes in attack activity with specific testing sessions.
+
+```bash
+curl "https://admin.hackgate.io/api/analytics/getWAFSummaryRulesTimeline?url=www-myorg.hackgate.net&gte=2024-06-01T00:00:00Z&lte=2024-06-30T23:59:59Z" \
+  -H "Authorization: Bearer <token>"
+```
+
+## Per-site attack type timeline
+
+Returns the attack type breakdown over time, split by site. Useful when you want to compare WAF activity across multiple HackGATE environments.
+
+```bash
+curl "https://admin.hackgate.io/api/analytics/getWAFRulesTimeline?url=www-myorg.hackgate.net&gte=2024-06-01T00:00:00Z&lte=2024-06-30T23:59:59Z" \
+  -H "Authorization: Bearer <token>"
+```

@@ -1,0 +1,169 @@
+---
+title: "GET and POST /api/sites/blocklist — block rules"
+description: "Retrieve and update path-based block rules for a HackGATE site. Rules specify path prefixes, HTTP methods, and the status code to return."
+---
+
+Block rules let you prevent researchers from reaching specific paths or using certain HTTP methods on your site. When an incoming request matches an enabled rule, the proxy returns the configured status code instead of forwarding the request to your origin.
+
+The block rule list is stored as a JSON-encoded string in the `blockListJson` field. You must decode this string to read the individual rules, and re-encode your full desired list when updating.
+
+## Block rule fields
+
+<ResponseField name="pathPrefix" type="string" required>
+  URL path prefix the rule applies to. Must start with `/`. All requests whose path starts with this value are matched.
+</ResponseField>
+
+<ResponseField name="methods" type="string[]" required>
+  HTTP methods to match. Use `["*"]` to match all methods. Example: `["POST", "PUT", "DELETE"]`.
+</ResponseField>
+
+<ResponseField name="status" type="integer" required>
+  HTTP status code returned to the researcher when the rule matches. Accepts any valid HTTP status code (100–599). Commonly `403` or `404`.
+</ResponseField>
+
+<ResponseField name="enabled" type="boolean" required>
+  Whether the rule is currently active. Set to `false` to disable a rule without removing it from the list.
+</ResponseField>
+
+---
+
+## Retrieve block rules
+
+Returns the current block rule list for a site.
+
+### Request
+
+```
+GET https://admin.hackgate.io/api/sites/{id}/blocklist
+```
+
+#### Headers
+
+<ParamField header="Authorization" type="string" required>
+  Bearer token. Example: `Bearer <token>`
+</ParamField>
+
+#### Path parameters
+
+<ParamField path="id" type="string" required>
+  The UUID of the site.
+</ParamField>
+
+### Response
+
+<ResponseField name="blockListJson" type="string" required>
+  A JSON-encoded string containing the array of block rule objects. Decode this string to read the individual rules. Returns `"[]"` if no rules are configured.
+</ResponseField>
+
+### Example
+
+<RequestExample>
+
+```bash cURL
+curl https://admin.hackgate.io/api/sites/a1b2c3d4-e5f6-7890-abcd-ef1234567890/blocklist \
+  -H "Authorization: Bearer <token>"
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{
+  "blockListJson": "[{\"pathPrefix\":\"/admin\",\"methods\":[\"*\"],\"status\":403,\"enabled\":true},{\"pathPrefix\":\"/internal\",\"methods\":[\"POST\",\"PUT\",\"DELETE\"],\"status\":403,\"enabled\":true}]"
+}
+```
+
+</ResponseExample>
+
+---
+
+## Update block rules
+
+Replaces the entire block rule list for a site. Construct your complete desired list and submit it as a JSON-encoded string in `blockListJson`.
+
+<Warning>
+This endpoint replaces all existing rules. Fetch the current list with `GET /api/sites/{id}/blocklist` first if you want to add or modify a rule without losing the rules already in place.
+</Warning>
+
+### Request
+
+```
+POST https://admin.hackgate.io/api/sites/blocklist
+```
+
+#### Headers
+
+<ParamField header="Authorization" type="string" required>
+  Bearer token. Example: `Bearer <token>`
+</ParamField>
+
+<ParamField header="Content-Type" type="string" required>
+  Must be `application/json`.
+</ParamField>
+
+#### Body
+
+<ParamField body="siteId" type="string" required>
+  The UUID of the site to update.
+</ParamField>
+
+<ParamField body="blockListJson" type="string" required>
+  A JSON-encoded string containing the full array of block rule objects. Pass `"[]"` to clear all rules.
+</ParamField>
+
+### Response
+
+Returns `200` on success. Rules are applied at the proxy immediately.
+
+### Examples
+
+<RequestExample>
+
+```bash Set rules
+curl -X POST https://admin.hackgate.io/api/sites/blocklist \
+  -H "Authorization: Bearer <token>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "siteId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "blockListJson": "[{\"pathPrefix\":\"/admin\",\"methods\":[\"*\"],\"status\":403,\"enabled\":true},{\"pathPrefix\":\"/internal\",\"methods\":[\"POST\",\"PUT\",\"DELETE\"],\"status\":403,\"enabled\":true}]"
+  }'
+```
+
+```bash Clear all rules
+curl -X POST https://admin.hackgate.io/api/sites/blocklist \
+  -H "Authorization: Bearer <token>" \
+  -H "Content-Type: application/json" \
+  -d '{"siteId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890", "blockListJson": "[]"}'
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{}
+```
+
+</ResponseExample>
+
+### Decoded rule list
+
+The `blockListJson` value above, decoded for readability:
+
+```json
+[
+  {
+    "pathPrefix": "/admin",
+    "methods": ["*"],
+    "status": 403,
+    "enabled": true
+  },
+  {
+    "pathPrefix": "/internal",
+    "methods": ["POST", "PUT", "DELETE"],
+    "status": 403,
+    "enabled": true
+  }
+]
+```

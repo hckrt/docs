@@ -1,0 +1,44 @@
+---
+title: "HackGATE: Managed Security Proxy for Pentest and Bug Bounty"
+description: "HackGATE lets organizations create authenticated proxy test environments for pentest and bug bounty programs without exposing production."
+---
+
+HackGATE is a managed reverse proxy gateway by [Hackrate](https://hackrate.io). When you create a HackGATE site, the platform provisions a unique `hackgate.net` subdomain — for example, `yourapp-yourorg.hackgate.net` — that proxies all traffic to your origin server. Researchers connect to that subdomain to perform testing. Your origin is never directly reachable from outside the proxy.
+
+This means you can run an active bug bounty or penetration testing program without exposing your production application to the open internet.
+
+<Info>
+  Patent notice: HackGATE includes technology for monitoring and controlling security testing activities. A U.S. patent application has been filed for this technology: **US Patent Applied #63/645,845**. Patent pending.
+</Info>
+
+## Key concepts
+
+**Sites** are the core unit of HackGATE. Each site maps one of your origin URLs to a dedicated `hackgate.net` subdomain. You control access, rate limits, blocked paths, and scheduling per site.
+
+**Organizations** provide the team context for your sites. All sites, members, and API keys belong to an organization. Your API tokens carry your organization identity in every request.
+
+**Hacker allowlists** let you restrict which researchers can access a site. You can open a site to all verified HackGATE users, or maintain an explicit list of approved email addresses.
+
+**Projects** let you group related sites together — useful for organizing a multi-scope bug bounty program or tracking multiple test environments for a single product.
+
+**Analytics and WAF monitoring** give you visibility into what researchers are testing. You can review traffic timelines, most-active users, path discovery, API endpoint coverage, and Web Application Firewall events powered by ModSecurity.
+
+## Explore the docs
+
+<CardGroup cols={2}>
+  <Card title="Quickstart" icon="rocket" href="/quickstart">
+    Create your first HackGATE site and share a test environment with researchers in under five minutes.
+  </Card>
+
+  <Card title="Authentication" icon="key" href="/authentication">
+    Learn how to authenticate API requests using Clerk JWT tokens or organization API keys.
+  </Card>
+
+  <Card title="Sites" icon="shield" href="/sites/overview">
+    Understand how HackGATE sites work, how to configure access controls, and how to manage them over time.
+  </Card>
+
+  <Card title="API reference" icon="code" href="/api/overview">
+    Full reference for the HackGATE REST API — endpoints, parameters, and response schemas.
+  </Card>
+</CardGroup>

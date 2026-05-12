@@ -1,0 +1,42 @@
+---
+title: "GET /api/account/currentUser — user profile"
+description: "GET /api/account/currentUser returns your user profile. If you are a new user, your account is created automatically on first call."
+---
+
+Use this endpoint to retrieve the profile of the currently authenticated user. The response confirms the identity tied to the Bearer token you are using. If the token belongs to a user who has never accessed the HackGATE API before, the system automatically provisions their account on first call — no separate registration step is required.
+
+## Endpoint
+
+```
+GET https://admin.hackgate.io/api/account/currentUser
+```
+
+## Request
+
+<ParamField header="Authorization" type="string" required>
+  Bearer token. See [Authentication](/api/authentication).
+</ParamField>
+
+## Response
+
+<ResponseField name="email" type="string">
+  The email address associated with the authenticated user's account.
+</ResponseField>
+
+## Behavior
+
+- **Existing user** — returns the profile for the account already on record.
+- **New user** — if no account exists for the authenticated identity, HackGATE creates one automatically and returns the new profile. You do not need to call a separate registration endpoint.
+
+## Example
+
+```bash
+curl https://admin.hackgate.io/api/account/currentUser \
+  -H "Authorization: Bearer <token>"
+```
+
+```json
+{
+  "email": "researcher@example.com"
+}
+```

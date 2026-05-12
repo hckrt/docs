@@ -1,0 +1,72 @@
+---
+title: "Manage billing information for your organization"
+description: "Store and update your organization's billing details — business name, VAT number, address, and billing email — through the HackGATE API."
+---
+
+HackGATE stores a single set of billing details per organization. These details are used for invoicing and are shared across all members of your org.
+
+## Retrieve current billing information
+
+```bash
+curl https://admin.hackgate.io/api/billing \
+  -H "Authorization: Bearer <token>"
+```
+
+**Response:**
+
+```json
+{
+  "bussinessName": "Acme Corp",
+  "vat": "EU123456789",
+  "address": "123 Main Street",
+  "addressLine2": "",
+  "city": "Budapest",
+  "zipCode": "1051",
+  "country": "Hungary",
+  "state": "",
+  "email": "billing@acme.com"
+}
+```
+
+## Update billing information
+
+Send a POST request to `/api/billing` with the fields you want to set. All fields are optional per update — only the fields you include will be written.
+
+```bash
+curl -X POST https://admin.hackgate.io/api/billing \
+  -H "Authorization: Bearer <token>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "bussinessName": "Acme Corp",
+    "vat": "EU123456789",
+    "address": "123 Main Street",
+    "addressLine2": "Suite 400",
+    "city": "Budapest",
+    "zipCode": "1051",
+    "country": "Hungary",
+    "state": "",
+    "email": "billing@acme.com"
+  }'
+```
+
+Returns `200 OK` on success.
+
+## Billing fields reference
+
+| Field | Description |
+|---|---|
+| `bussinessName` | Legal business name for invoices. |
+| `vat` | VAT or tax identification number. |
+| `address` | Primary street address. |
+| `addressLine2` | Apartment, suite, or additional address line. |
+| `city` | City. |
+| `zipCode` | Postal or ZIP code. |
+| `country` | Country name. |
+| `state` | State or province, if applicable. |
+| `email` | Email address where invoices should be sent. |
+
+<Note>
+  Billing information is per-organization. All members of your org share the same billing details. Updating billing information does not affect your active sites or credit balance.
+</Note>
+
+For questions about invoices or purchasing credits, contact [sales@hckrt.com](mailto:sales@hckrt.com).

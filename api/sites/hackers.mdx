@@ -1,0 +1,300 @@
+---
+title: "Manage the researcher allowlist for a site"
+description: "List, add, and remove researchers from the HackGATE site allowlist. Control which email addresses can access your test environment."
+---
+
+HackGATE supports two access modes for each site. In open mode any authenticated researcher can connect. In restricted mode only email addresses on the allowlist can connect. Use the endpoints below to read and update the allowlist, and to toggle between the two modes.
+
+All four endpoints require a Bearer token in the `Authorization` header.
+
+<Tabs>
+  <Tab title="List researchers">
+
+## GET /api/sites/getHackers/{id}
+
+Returns all researchers currently on the allowlist for a site.
+
+### Request
+
+```
+GET https://admin.hackgate.io/api/sites/getHackers/{id}
+```
+
+#### Headers
+
+<ParamField header="Authorization" type="string" required>
+  Bearer token. Example: `Bearer <token>`
+</ParamField>
+
+#### Path parameters
+
+<ParamField path="id" type="string" required>
+  The UUID of the site.
+</ParamField>
+
+### Response
+
+Returns an array of allowlist entries.
+
+<ResponseField name="[]" type="object[]">
+  <Expandable title="Allowlist entry fields" defaultOpen>
+    <ResponseField name="id" type="string" required>
+      Unique identifier for this allowlist entry. Use this value when removing the researcher.
+    </ResponseField>
+    <ResponseField name="email" type="string" required>
+      Email address of the researcher.
+    </ResponseField>
+    <ResponseField name="siteId" type="string" required>
+      UUID of the site this entry belongs to.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+### Example
+
+<RequestExample>
+
+```bash cURL
+curl https://admin.hackgate.io/api/sites/getHackers/a1b2c3d4-e5f6-7890-abcd-ef1234567890 \
+  -H "Authorization: Bearer <token>"
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+[
+  {
+    "id": "entry-uuid-1",
+    "email": "alice@example.com",
+    "siteId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+  },
+  {
+    "id": "entry-uuid-2",
+    "email": "bob@example.com",
+    "siteId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+  }
+]
+```
+
+</ResponseExample>
+
+  </Tab>
+  <Tab title="Add researcher">
+
+## POST /api/sites/addHacker
+
+Adds a researcher's email to the allowlist. Returns the full updated allowlist.
+
+### Request
+
+```
+POST https://admin.hackgate.io/api/sites/addHacker
+```
+
+#### Headers
+
+<ParamField header="Authorization" type="string" required>
+  Bearer token. Example: `Bearer <token>`
+</ParamField>
+
+<ParamField header="Content-Type" type="string" required>
+  Must be `application/json`.
+</ParamField>
+
+#### Body
+
+<ParamField body="siteId" type="string" required>
+  The UUID of the site to add the researcher to.
+</ParamField>
+
+<ParamField body="email" type="string" required>
+  The researcher's email address. Returns `400` if this email is already on the allowlist.
+</ParamField>
+
+### Response
+
+Returns the complete updated allowlist after the addition.
+
+<ResponseField name="[]" type="object[]">
+  <Expandable title="Allowlist entry fields" defaultOpen>
+    <ResponseField name="id" type="string" required>
+      Unique identifier for this allowlist entry.
+    </ResponseField>
+    <ResponseField name="email" type="string" required>
+      Email address of the researcher.
+    </ResponseField>
+    <ResponseField name="siteId" type="string" required>
+      UUID of the site.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+### Example
+
+<RequestExample>
+
+```bash cURL
+curl -X POST https://admin.hackgate.io/api/sites/addHacker \
+  -H "Authorization: Bearer <token>" \
+  -H "Content-Type: application/json" \
+  -d '{"siteId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890", "email": "alice@example.com"}'
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+[
+  {
+    "id": "entry-uuid-1",
+    "email": "alice@example.com",
+    "siteId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+  }
+]
+```
+
+```json 400
+{
+  "title": "Researcher is already on the allowlist.",
+  "status": 400
+}
+```
+
+</ResponseExample>
+
+  </Tab>
+  <Tab title="Remove researcher">
+
+## POST /api/sites/removeHacker
+
+Removes a researcher from the allowlist. Use the `id` returned by `getHackers` to identify the entry.
+
+### Request
+
+```
+POST https://admin.hackgate.io/api/sites/removeHacker
+```
+
+#### Headers
+
+<ParamField header="Authorization" type="string" required>
+  Bearer token. Example: `Bearer <token>`
+</ParamField>
+
+<ParamField header="Content-Type" type="string" required>
+  Must be `application/json`.
+</ParamField>
+
+#### Body
+
+<ParamField body="id" type="string" required>
+  The UUID of the allowlist entry to remove. Returned as `id` in the `getHackers` response.
+</ParamField>
+
+<ParamField body="siteId" type="string" required>
+  The UUID of the site.
+</ParamField>
+
+<ParamField body="email" type="string" required>
+  The email address of the researcher being removed.
+</ParamField>
+
+### Response
+
+Returns `200` on success. No body is returned.
+
+### Example
+
+<RequestExample>
+
+```bash cURL
+curl -X POST https://admin.hackgate.io/api/sites/removeHacker \
+  -H "Authorization: Bearer <token>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "id": "entry-uuid-1",
+    "siteId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "email": "alice@example.com"
+  }'
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{}
+```
+
+</ResponseExample>
+
+  </Tab>
+  <Tab title="Toggle access mode">
+
+## POST /api/sites/allowedHackerType
+
+Switches a site between open access and restricted (allowlist-only) access.
+
+Set `allowedHackerType` to `true` to enforce the allowlist. Set it to `false` to allow any authenticated researcher to connect.
+
+### Request
+
+```
+POST https://admin.hackgate.io/api/sites/allowedHackerType
+```
+
+#### Headers
+
+<ParamField header="Authorization" type="string" required>
+  Bearer token. Example: `Bearer <token>`
+</ParamField>
+
+<ParamField header="Content-Type" type="string" required>
+  Must be `application/json`.
+</ParamField>
+
+#### Body
+
+<ParamField body="id" type="string" required>
+  The UUID of the site to update.
+</ParamField>
+
+<ParamField body="allowedHackerType" type="boolean" required>
+  `true` to restrict access to the allowlist only. `false` to allow any authenticated researcher.
+</ParamField>
+
+### Response
+
+Returns `200` on success. No body is returned.
+
+### Example
+
+<RequestExample>
+
+```bash cURL
+# Enable allowlist-only access
+curl -X POST https://admin.hackgate.io/api/sites/allowedHackerType \
+  -H "Authorization: Bearer <token>" \
+  -H "Content-Type: application/json" \
+  -d '{"id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890", "allowedHackerType": true}'
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{}
+```
+
+</ResponseExample>
+
+<Note>
+Switching to allowlist-only mode takes effect immediately. Researchers not on the list are blocked at the proxy from that point forward.
+</Note>
+
+  </Tab>
+</Tabs>

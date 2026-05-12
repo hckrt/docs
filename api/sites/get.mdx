@@ -1,0 +1,130 @@
+---
+title: "GET /api/sites/{id} — retrieve a single site"
+description: "GET /api/sites/{id} returns the full details of a specific HackGATE site including its proxied URL, status, and configuration fields."
+---
+
+Returns the complete configuration for a single HackGATE site. Use this endpoint to read a site's current state, scheduling, credentials, instructions, rate limit, and block rules.
+
+## Request
+
+```
+GET https://admin.hackgate.io/api/sites/{id}
+```
+
+### Headers
+
+<ParamField header="Authorization" type="string" required>
+  Bearer token. Example: `Bearer <token>`
+</ParamField>
+
+### Path parameters
+
+<ParamField path="id" type="string" required>
+  The UUID of the site to retrieve. Returned as `id` when the site is created.
+</ParamField>
+
+## Response
+
+Returns the full site object.
+
+<ResponseField name="id" type="string" required>
+  Unique identifier for the site (UUID).
+</ResponseField>
+
+<ResponseField name="originName" type="string" required>
+  The origin URL being proxied (e.g. `https://www.example.com`).
+</ResponseField>
+
+<ResponseField name="hackgatedName" type="string" required>
+  The `hackgate.io` subdomain provisioned for this site (e.g. `www-myorg.hackgate.io`).
+</ResponseField>
+
+<ResponseField name="isActive" type="boolean" required>
+  Whether the site is currently active and accepting researcher connections.
+</ResponseField>
+
+<ResponseField name="orgId" type="string" required>
+  Organization ID that owns this site.
+</ResponseField>
+
+<ResponseField name="cretedByUserId" type="string" required>
+  User ID of the account that created the site.
+</ResponseField>
+
+<ResponseField name="creationdDate" type="string" required>
+  ISO 8601 timestamp of when the site was created.
+</ResponseField>
+
+<ResponseField name="hasCustomList" type="boolean" required>
+  Whether a custom researcher allowlist is enabled. When `true`, only emails on the allowlist can connect.
+</ResponseField>
+
+<ResponseField name="isDeploymentProgress" type="boolean" required>
+  `true` while the proxy infrastructure is being provisioned. Enable and disable operations are blocked while this is `true`.
+</ResponseField>
+
+<ResponseField name="startDate" type="string">
+  Scheduled activation date (ISO 8601). `null` if no schedule is set.
+</ResponseField>
+
+<ResponseField name="stopDate" type="string">
+  Scheduled deactivation date (ISO 8601). `null` if no schedule is set.
+</ResponseField>
+
+<ResponseField name="credentials" type="string">
+  Test credentials distributed to researchers. `null` if not configured.
+</ResponseField>
+
+<ResponseField name="instructions" type="string">
+  Testing instructions distributed to researchers. `null` if not configured.
+</ResponseField>
+
+<ResponseField name="rateLimit" type="string">
+  Rate limiting rule string applied at the proxy. `null` if rate limiting is not configured.
+</ResponseField>
+
+<ResponseField name="blockList" type="string">
+  JSON-encoded string of block rules. `null` if no block rules are configured. Decode this string to read the individual rule objects.
+</ResponseField>
+
+## Example
+
+<RequestExample>
+
+```bash cURL
+curl https://admin.hackgate.io/api/sites/a1b2c3d4-e5f6-7890-abcd-ef1234567890 \
+  -H "Authorization: Bearer <token>"
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{
+  "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+  "originName": "https://www.example.com",
+  "hackgatedName": "www-myorg.hackgate.io",
+  "isActive": true,
+  "orgId": "org-uuid",
+  "cretedByUserId": "user-uuid",
+  "creationdDate": "2024-06-01T10:00:00Z",
+  "hasCustomList": false,
+  "isDeploymentProgress": false,
+  "startDate": "2024-07-01T08:00:00Z",
+  "stopDate": "2024-07-31T18:00:00Z",
+  "credentials": "username: tester\npassword: hunter2",
+  "instructions": "Focus on the /api endpoints. Avoid /admin.",
+  "rateLimit": "100r/m",
+  "blockList": "[{\"pathPrefix\":\"/admin\",\"methods\":[\"*\"],\"status\":403,\"enabled\":true}]"
+}
+```
+
+```json 404
+{
+  "title": "Site not found.",
+  "status": 404
+}
+```
+
+</ResponseExample>

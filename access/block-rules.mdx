@@ -1,0 +1,59 @@
+---
+title: "Block specific paths and HTTP methods on your site"
+description: "Create block rules to prevent researchers from sending requests to specific paths or using certain HTTP methods on your HackGATE test environment."
+---
+
+Block rules let you restrict access to certain paths and HTTP methods in your test environment. When a researcher sends a request that matches an enabled rule, the proxy returns the configured HTTP status code instead of forwarding the request to your origin.
+
+## Block rule fields
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `pathPrefix` | string | Yes | URL path prefix the rule applies to. Must start with `/`. |
+| `methods` | string[] | No | HTTP methods to match. Use `["*"]` to match all methods. Defaults to `["*"]`. |
+| `status` | integer | Yes | HTTP status code to return when the rule matches (100–599). |
+| `enabled` | boolean | No | Whether the rule is active. Defaults to `true`. |
+
+## Retrieve current block rules
+
+```bash
+curl https://admin.hackgate.io/api/sites/SITE_ID/blocklist \
+  -H "Authorization: Bearer <token>"
+```
+
+**Response:**
+
+```json
+{"blockListJson": "[{...}]"}
+```
+
+The `blockListJson` value is a JSON-encoded string containing the array of block rules.
+
+## Update block rules
+
+The `POST /api/sites/blocklist` endpoint replaces the entire block rule list for a site. Construct your full desired list and submit it as a JSON-encoded string in the `blockListJson` field.
+
+```bash
+curl -X POST https://admin.hackgate.io/api/sites/blocklist \
+  -H "Authorization: Bearer <token>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "siteId": "SITE_ID",
+    "blockListJson": "[{\"pathPrefix\":\"/admin\",\"methods\":[\"*\"],\"status\":403,\"enabled\":true},{\"pathPrefix\":\"/internal\",\"methods\":[\"POST\",\"PUT\",\"DELETE\"],\"status\":403,\"enabled\":true}]"
+  }'
+```
+
+To clear all block rules, set `blockListJson` to an empty array:
+
+```bash
+curl -X POST https://admin.hackgate.io/api/sites/blocklist \
+  -H "Authorization: Bearer <token>" \
+  -H "Content-Type: application/json" \
+  -d '{"siteId": "SITE_ID", "blockListJson": "[]"}'
+```
+
+Rules are applied by the proxy immediately after the update. Only rules with `"enabled": true` are enforced — you can disable a rule without removing it by setting `"enabled": false`.
+
+<Warning>
+  The `POST` endpoint replaces all existing rules. Fetch the current list first if you want to add a rule without removing the ones already in place.
+</Warning>

@@ -1,0 +1,143 @@
+---
+title: "Upload and retrieve the OpenAPI schema for a site"
+description: "Upload an OpenAPI JSON or YAML schema to a HackGATE site to enable API coverage tracking. Retrieve the schema with the proxied host set."
+---
+
+HackGATE uses your OpenAPI schema to power API coverage tracking in the analytics dashboard. Upload your schema once; HackGATE rewrites the `servers` field to point to the site's `hackgatedName` subdomain so coverage data aligns with proxied traffic.
+
+## Upload a schema
+
+Uploads an OpenAPI schema file for a site. The file is validated before being stored.
+
+### Request
+
+```
+POST https://admin.hackgate.io/api/sites/uploadOpenAPISchema
+```
+
+This endpoint accepts a `multipart/form-data` body.
+
+#### Headers
+
+<ParamField header="Authorization" type="string" required>
+  Bearer token. Example: `Bearer <token>`
+</ParamField>
+
+<ParamField header="Content-Type" type="string" required>
+  Must be `multipart/form-data`.
+</ParamField>
+
+#### Form fields
+
+<ParamField body="file" type="file" required>
+  The OpenAPI schema file to upload. Accepted formats:
+
+  - `.json` — OpenAPI JSON
+  - `.yaml` or `.yml` — OpenAPI YAML
+
+  The file must be a valid OpenAPI 2.x or 3.x document. Files that fail OpenAPI validation are rejected with a `400` error.
+</ParamField>
+
+<ParamField body="siteId" type="string" required>
+  The UUID of the site to attach the schema to.
+</ParamField>
+
+### Validation rules
+
+| Condition | Status | Description |
+|-----------|--------|-------------|
+| File extension is not `.json`, `.yaml`, or `.yml` | `400` | Unsupported file type |
+| File is not a valid OpenAPI document | `400` | Schema validation failure |
+| `siteId` does not exist | `404` | Site not found |
+
+### Response
+
+Returns `200` on success. No body is returned.
+
+### Example
+
+<RequestExample>
+
+```bash cURL
+curl -X POST https://admin.hackgate.io/api/sites/uploadOpenAPISchema \
+  -H "Authorization: Bearer <token>" \
+  -F "file=@openapi.json;type=application/json" \
+  -F "siteId=a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{}
+```
+
+```json 400
+{
+  "title": "Unsupported file type. Upload a .json, .yaml, or .yml file.",
+  "status": 400
+}
+```
+
+</ResponseExample>
+
+---
+
+## Retrieve the schema
+
+Returns the stored OpenAPI schema for a site. The `servers` field in the returned document is rewritten to use the site's `hackgatedName` subdomain.
+
+### Request
+
+```
+GET https://admin.hackgate.io/api/sites/getAPIdefinition/{id}
+```
+
+#### Headers
+
+<ParamField header="Authorization" type="string" required>
+  Bearer token. Example: `Bearer <token>`
+</ParamField>
+
+#### Path parameters
+
+<ParamField path="id" type="string" required>
+  The UUID of the site.
+</ParamField>
+
+### Response
+
+<ResponseField name="" type="string" required>
+  The OpenAPI document as a JSON string, with the `servers` field set to the site's `hackgatedName` subdomain (e.g. `https://www-myorg.hackgate.io`). Returns `404` if no schema has been uploaded for the site.
+</ResponseField>
+
+### Example
+
+<RequestExample>
+
+```bash cURL
+curl https://admin.hackgate.io/api/sites/getAPIdefinition/a1b2c3d4-e5f6-7890-abcd-ef1234567890 \
+  -H "Authorization: Bearer <token>"
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+"{\"openapi\":\"3.0.0\",\"info\":{\"title\":\"Example API\",\"version\":\"1.0.0\"},\"servers\":[{\"url\":\"https://www-myorg.hackgate.io\"}],\"paths\":{...}}"
+```
+
+```json 404
+{
+  "title": "No schema found for this site.",
+  "status": 404
+}
+```
+
+</ResponseExample>
+
+<Note>
+The response is a JSON string, not an object. Parse it with `JSON.parse()` before using it as an OpenAPI document.
+</Note>

@@ -1,0 +1,54 @@
+---
+title: "Enable and disable a HackGATE site"
+description: "Enable or disable a HackGATE site to control researcher access. Enabling makes the proxy subdomain live; disabling serves an offline page instead."
+---
+
+Enabling a site makes the proxy subdomain live so researchers can connect. Disabling it takes the proxy offline — requests to the `hackgatedName` subdomain return a default page until you re-enable it.
+
+## Enable a site
+
+Send a `GET` request to `/api/sites/enable/{id}`:
+
+```bash
+curl https://admin.hackgate.io/api/sites/enable/SITE_ID \
+  -H "Authorization: Bearer <token>"
+```
+
+The site's `isActive` field becomes `true`. The activity log records a **Started** event with the current timestamp.
+
+## Disable a site
+
+Send a `GET` request to `/api/sites/disable/{id}`:
+
+```bash
+curl https://admin.hackgate.io/api/sites/disable/SITE_ID \
+  -H "Authorization: Bearer <token>"
+```
+
+The site's `isActive` field becomes `false`. Researchers connecting to the proxy subdomain receive a default offline page. The activity log records a **Stopped** event.
+
+## Response
+
+Both endpoints return the updated site object:
+
+```json
+{
+  "id": "a1b2c3d4-...",
+  "originName": "https://www.example.com",
+  "hackgatedName": "www-myorg.hackgate.net",
+  "isActive": true,
+  "isDeploymentProgress": false
+}
+```
+
+## Constraints
+
+| Condition | Result |
+| --- | --- |
+| Site is still deploying (`isDeploymentProgress: true`) | Cannot enable. Wait for deployment to complete. |
+| Site is already active | Cannot enable again. |
+| Site is already disabled | Cannot disable again. |
+
+<Note>
+  If you want the site to activate or deactivate at a specific future time without manual intervention, use [scheduling](/sites/scheduling) instead.
+</Note>

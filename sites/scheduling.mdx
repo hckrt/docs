@@ -1,0 +1,50 @@
+---
+title: "Schedule HackGATE site start and stop times"
+description: "Automate when your HackGATE test environment goes live and shuts down by scheduling start and stop times. HackGATE notifies all org members by email."
+---
+
+Scheduling lets you define a precise pentest window without manual intervention. Set a future start time, a future stop time, or both. HackGATE enables and disables the site automatically at the scheduled times, and notifies all organization members by email.
+
+All dates must be in **ISO 8601 UTC format**, e.g. `2024-07-01T08:00:00Z`.
+
+<Tip>
+Use scheduling to enforce a fixed pentest window. Combine a start and stop time to ensure the environment is only reachable during your authorized testing period.
+</Tip>
+
+## Schedule a start time
+
+Send a `POST` request to `/api/sites/start` with the site `id` and the desired `startDate`:
+
+```bash
+curl -X POST https://admin.hackgate.io/api/sites/start \
+  -H "Authorization: Bearer <token>" \
+  -H "Content-Type: application/json" \
+  -d '{"id": "SITE_ID", "startDate": "2024-07-01T08:00:00Z"}'
+```
+
+At the scheduled time, HackGATE enables the site and records a **Started** event in the activity log. All organization members receive an email confirmation with the scheduled start time.
+
+## Schedule a stop time
+
+Send a `POST` request to `/api/sites/stop` with the site `id` and the desired `stopDate`:
+
+```bash
+curl -X POST https://admin.hackgate.io/api/sites/stop \
+  -H "Authorization: Bearer <token>" \
+  -H "Content-Type: application/json" \
+  -d '{"id": "SITE_ID", "stopDate": "2024-07-05T18:00:00Z"}'
+```
+
+At the scheduled time, HackGATE disables the site and records a **Stopped** event in the activity log. All organization members receive an email confirmation with the scheduled stop time.
+
+## Request fields
+
+| Field | Type | Description |
+|---|---|---|
+| `id` | string | The site ID returned when the site was created. |
+| `startDate` | string (ISO 8601 UTC) | The datetime at which the site should be enabled. |
+| `stopDate` | string (ISO 8601 UTC) | The datetime at which the site should be disabled. |
+
+## Manual overrides
+
+Scheduling does not prevent you from enabling or disabling the site manually before the scheduled time. Use [enable and disable](/sites/enable-disable) to override a schedule at any point.

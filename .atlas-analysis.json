@@ -1,0 +1,169 @@
+{
+  "projectType": "saas",
+  "projectName": "HackGATE",
+  "projectDescription": "HackGATE is a managed security proxy gateway that lets organizations stand up controlled, authenticated test environments for penetration testing and bug bounty programs — without exposing production systems directly.",
+  "theme": "luma",
+  "primaryColor": "#647ab1",
+  "lightColor": "#b5b9d3",
+  "darkColor": "#040404",
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "Get Started",
+            "pages": [
+              "introduction",
+              "quickstart",
+              "authentication"
+            ]
+          },
+          {
+            "group": "HackGATE Sites",
+            "pages": [
+              "sites/overview",
+              "sites/create",
+              "sites/enable-disable",
+              "sites/scheduling",
+              "sites/credentials-instructions"
+            ]
+          },
+          {
+            "group": "Access Control",
+            "pages": [
+              "access/hacker-allowlist",
+              "access/rate-limiting",
+              "access/block-rules"
+            ]
+          },
+          {
+            "group": "Analytics & Monitoring",
+            "pages": [
+              "analytics/traffic",
+              "analytics/waf",
+              "analytics/api-coverage"
+            ]
+          },
+          {
+            "group": "Projects",
+            "pages": [
+              "projects/overview",
+              "projects/manage"
+            ]
+          },
+          {
+            "group": "Organization & Billing",
+            "pages": [
+              "organization/settings",
+              "organization/billing"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "API Reference",
+        "groups": [
+          {
+            "group": "Overview",
+            "pages": [
+              "api/overview",
+              "api/authentication"
+            ]
+          },
+          {
+            "group": "Sites",
+            "pages": [
+              "api/sites/list",
+              "api/sites/create",
+              "api/sites/get",
+              "api/sites/enable",
+              "api/sites/disable",
+              "api/sites/hackers",
+              "api/sites/blocklist",
+              "api/sites/openapi-schema"
+            ]
+          },
+          {
+            "group": "Projects",
+            "pages": [
+              "api/projects/list",
+              "api/projects/create",
+              "api/projects/update"
+            ]
+          },
+          {
+            "group": "Analytics",
+            "pages": [
+              "api/analytics/traffic",
+              "api/analytics/waf"
+            ]
+          },
+          {
+            "group": "Account & Org",
+            "pages": [
+              "api/account",
+              "api/organization",
+              "api/billing"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "keyFeatures": [
+    "One-click HackGATE site creation — proxies your origin through a managed, hackgate.io subdomain",
+    "Hacker allowlist — restrict site access to approved researcher emails or open to all",
+    "Rate limiting — configurable per-site request rate policies",
+    "Block rules — path-based HTTP method blocking with per-rule enable/disable toggle",
+    "Traffic analytics — most active users, path discovery, traffic timeline via Elasticsearch",
+    "WAF monitoring — ModSecurity-powered attack type breakdown and rules timeline",
+    "API coverage — upload an OpenAPI schema and see which endpoints hackers have exercised",
+    "Scheduled start/stop — set future activation and deactivation times for a site",
+    "PIE security checks — built-in checks for common vulnerabilities (SQLi, path traversal, .git exposure, Log4Shell, etc.)",
+    "Project management — group HackGATE sites into named projects with timeline and metadata",
+    "Organization API key support — authenticate with Clerk org API keys for CI/CD and automation",
+    "Billing information management — store and update company billing details per organization"
+  ],
+  "publicApiSurface": [
+    "GET /api/sites — list all HackGATE sites for the authenticated organization",
+    "POST /api/sites — create a new HackGATE site (proxied subdomain)",
+    "GET /api/sites/{id} — get a specific site",
+    "GET /api/sites/enable/{id} — enable (activate) a site",
+    "GET /api/sites/disable/{id} — disable (deactivate) a site",
+    "GET /api/sites/getHackers/{id} — list allowed hackers for a site",
+    "POST /api/sites/addHacker — add a hacker to the allowlist",
+    "POST /api/sites/removeHacker — remove a hacker from the allowlist",
+    "POST /api/sites/allowedHackerType — toggle between custom allowlist and open access",
+    "POST /api/sites/setRateLimiting — configure rate limiting policy for a site",
+    "POST /api/sites/start — schedule a site to start at a future time",
+    "POST /api/sites/stop — schedule a site to stop at a future time",
+    "POST /api/sites/instructions — update hacker instructions for a site",
+    "POST /api/sites/credentials — update test credentials for a site",
+    "GET /api/sites/{id}/blocklist — retrieve block rules for a site",
+    "POST /api/sites/blocklist — update block rules for a site",
+    "POST /api/sites/uploadOpenAPISchema — upload an OpenAPI JSON/YAML schema for a site",
+    "GET /api/sites/getAPIdefinition/{id} — retrieve the processed OpenAPI definition",
+    "GET /api/sites/getLog/{id} — get activity log for a site",
+    "GET /api/sites/getUsageByMonth/{id} — get usage day count for a month",
+    "GET /api/projects — list projects",
+    "POST /api/projects — create a project",
+    "PUT /api/projects — update a project",
+    "GET /api/projects/getProjectItems — list project items",
+    "POST /api/projects/createProjectItem — create a project item",
+    "PUT /api/projects/updateProjectItem — update a project item",
+    "GET /api/analytics/getMostActiveUsers — top users by request count",
+    "GET /api/analytics/getTotalRequest — total request count for a site and time range",
+    "GET /api/analytics/getPathDiscovery — discovered request paths",
+    "GET /api/analytics/getTrafficTimeline — per-user traffic timeline",
+    "GET /api/analytics/getWAFMessages — WAF rule trigger messages",
+    "GET /api/analytics/getWAFAttackTypes — WAF attack type breakdown",
+    "GET /api/analytics/getAPICoverage — API endpoint coverage vs OpenAPI schema",
+    "GET /api/organization — get organization credits",
+    "GET /api/billing — retrieve billing information",
+    "POST /api/billing — update billing information",
+    "GET /api/account/currentUser — get or create current user profile",
+    "GET /api/PIE/getChecks — list available PIE security checks",
+    "POST /api/PIE/runCheck — run a PIE security check against a site"
+  ]
+}

@@ -1,0 +1,198 @@
+---
+title: "Traffic analytics API — requests, users, paths"
+description: "Query researcher traffic on your HackGATE site: total requests, most active users, path discovery, and per-user timelines by time range."
+---
+
+The traffic analytics endpoints give you detailed visibility into researcher activity on your HackGATE-protected sites. You can count total requests, identify the most active researchers, see which paths they have discovered, and pull timeline charts — all scoped to a time window you define. For multi-site rollups, use the summary endpoints that accept an array of URLs.
+
+All traffic endpoints require a valid Bearer token in the `Authorization` header.
+
+---
+
+## Common query parameters
+
+Most single-site endpoints share these query parameters:
+
+<ParamField query="url" type="string" required>
+  The `hackgatedName` of the HackGATE site to query. This is the subdomain identifier assigned when the site was created.
+</ParamField>
+
+<ParamField query="gte" type="string" required>
+  Start of the time range, as an ISO 8601 date-time string (for example, `2025-07-01T00:00:00Z`).
+</ParamField>
+
+<ParamField query="lte" type="string" required>
+  End of the time range, as an ISO 8601 date-time string (for example, `2025-07-14T23:59:59Z`).
+</ParamField>
+
+---
+
+## Single-site endpoints
+
+<Tabs>
+  <Tab title="Total requests">
+
+### GET /api/analytics/getTotalRequest
+
+```
+GET https://admin.hackgate.io/api/analytics/getTotalRequest
+```
+
+Returns the total number of requests made through the HackGATE proxy for the specified site and time range.
+
+```bash
+curl "https://admin.hackgate.io/api/analytics/getTotalRequest?url=my-site&gte=2025-07-01T00:00:00Z&lte=2025-07-14T23:59:59Z" \
+  -H "Authorization: Bearer <token>"
+```
+
+  </Tab>
+  <Tab title="Most active users">
+
+### GET /api/analytics/getMostActiveUsers
+
+```
+GET https://admin.hackgate.io/api/analytics/getMostActiveUsers
+```
+
+Returns a ranked list of the researchers (by identity) who sent the most requests through the proxy during the specified time window.
+
+```bash
+curl "https://admin.hackgate.io/api/analytics/getMostActiveUsers?url=my-site&gte=2025-07-01T00:00:00Z&lte=2025-07-14T23:59:59Z" \
+  -H "Authorization: Bearer <token>"
+```
+
+  </Tab>
+  <Tab title="Path discovery">
+
+### GET /api/analytics/getPathDiscovery
+
+```
+GET https://admin.hackgate.io/api/analytics/getPathDiscovery
+```
+
+Returns the set of URL paths that researchers accessed on the target site during the time range, showing what endpoints have been explored.
+
+```bash
+curl "https://admin.hackgate.io/api/analytics/getPathDiscovery?url=my-site&gte=2025-07-01T00:00:00Z&lte=2025-07-14T23:59:59Z" \
+  -H "Authorization: Bearer <token>"
+```
+
+  </Tab>
+  <Tab title="Traffic timeline">
+
+### GET /api/analytics/getTrafficTimeline
+
+```
+GET https://admin.hackgate.io/api/analytics/getTrafficTimeline
+```
+
+Returns time-bucketed request counts for a single site, suitable for rendering a traffic chart over the selected period.
+
+```bash
+curl "https://admin.hackgate.io/api/analytics/getTrafficTimeline?url=my-site&gte=2025-07-01T00:00:00Z&lte=2025-07-14T23:59:59Z" \
+  -H "Authorization: Bearer <token>"
+```
+
+  </Tab>
+  <Tab title="Traffic table">
+
+### GET /api/analytics/getTrafficTable
+
+```
+GET https://admin.hackgate.io/api/analytics/getTrafficTable
+```
+
+Returns a tabular breakdown of traffic data for a single site, including per-user or per-path detail depending on the response shape.
+
+```bash
+curl "https://admin.hackgate.io/api/analytics/getTrafficTable?url=my-site&gte=2025-07-01T00:00:00Z&lte=2025-07-14T23:59:59Z" \
+  -H "Authorization: Bearer <token>"
+```
+
+  </Tab>
+</Tabs>
+
+---
+
+## Multi-site summary endpoints
+
+Use these endpoints when you need aggregated traffic data across multiple HackGATE sites in a single request. Both accept a JSON body instead of query parameters.
+
+<Tabs>
+  <Tab title="Summary traffic table">
+
+### POST /api/analytics/getSummaryTrafficTable
+
+```
+POST https://admin.hackgate.io/api/analytics/getSummaryTrafficTable
+```
+
+Returns a tabular traffic summary aggregated across the sites you specify.
+
+#### Body parameters
+
+<ParamField body="urls" type="string[]" required>
+  Array of `hackgatedName` values identifying the sites to include in the summary.
+</ParamField>
+
+<ParamField body="gte" type="string" required>
+  Start of the time range as an ISO 8601 date-time string.
+</ParamField>
+
+<ParamField body="lte" type="string" required>
+  End of the time range as an ISO 8601 date-time string.
+</ParamField>
+
+#### Example
+
+```bash
+curl -X POST https://admin.hackgate.io/api/analytics/getSummaryTrafficTable \
+  -H "Authorization: Bearer <token>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "urls": ["site-alpha", "site-beta"],
+    "gte": "2025-07-01T00:00:00Z",
+    "lte": "2025-07-14T23:59:59Z"
+  }'
+```
+
+  </Tab>
+  <Tab title="Summary timeline">
+
+### POST /api/analytics/getSummaryTimeline
+
+```
+POST https://admin.hackgate.io/api/analytics/getSummaryTimeline
+```
+
+Returns a time-bucketed traffic timeline aggregated across multiple sites.
+
+#### Body parameters
+
+<ParamField body="urls" type="string[]" required>
+  Array of `hackgatedName` values identifying the sites to include.
+</ParamField>
+
+<ParamField body="gte" type="string" required>
+  Start of the time range as an ISO 8601 date-time string.
+</ParamField>
+
+<ParamField body="lte" type="string" required>
+  End of the time range as an ISO 8601 date-time string.
+</ParamField>
+
+#### Example
+
+```bash
+curl -X POST https://admin.hackgate.io/api/analytics/getSummaryTimeline \
+  -H "Authorization: Bearer <token>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "urls": ["site-alpha", "site-beta"],
+    "gte": "2025-07-01T00:00:00Z",
+    "lte": "2025-07-14T23:59:59Z"
+  }'
+```
+
+  </Tab>
+</Tabs>

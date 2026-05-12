@@ -1,0 +1,39 @@
+---
+title: "View your organization credits and settings"
+description: "Check your HackGATE organization's ID and available credit balance using the organization API endpoint. Credits represent your usage capacity."
+---
+
+Your organization is the top-level context for all HackGATE resources. Every site, project, and billing record belongs to your org. When you authenticate with the API, all requests operate within your org's scope.
+
+## Check your organization details
+
+Use the `/api/organization` endpoint to retrieve your org's ID and current credit balance.
+
+```bash
+curl https://admin.hackgate.io/api/organization \
+  -H "Authorization: Bearer <token>"
+```
+
+**Response:**
+
+```json
+{
+  "id": "org_xxxxxxxxxxxx",
+  "credits": 10
+}
+```
+
+## Credits
+
+Credits represent your available usage capacity within HackGATE. Each active site or engagement consumes credits. When your balance reaches zero, you will need to purchase additional credits before activating new resources.
+
+To top up your credits, contact the Hackrate team:
+
+- **Support**: [support@hckrt.com](mailto:support@hckrt.com)
+- **Sales**: [sales@hckrt.com](mailto:sales@hckrt.com)
+
+<Note>
+  All API requests must carry an org-scoped token. Requests without valid org context return `401 Unauthorized`.
+</Note>
+
+For invoicing details and payment information, see [Manage billing information](/organization/billing).

@@ -1,0 +1,123 @@
+---
+title: "GET /api/sites — list HackGATE sites"
+description: "GET /api/sites returns all HackGATE sites for your organization. Filter by search term. Each site includes its proxied URL and active status."
+---
+
+Returns the full list of HackGATE sites in your organization. Use the query parameters to filter and sort the results.
+
+## Request
+
+```
+GET https://admin.hackgate.io/api/sites
+```
+
+### Headers
+
+<ParamField header="Authorization" type="string" required>
+  Bearer token. Example: `Bearer <token>`
+</ParamField>
+
+### Query parameters
+
+<ParamField query="orderBy" type="string">
+  Field name to sort results by. Omit for default server ordering.
+</ParamField>
+
+<ParamField query="searchTerm" type="string">
+  Filters results to sites whose `originName` or `hackgatedName` contains this string. Case-insensitive.
+</ParamField>
+
+<ParamField query="isActive" type="boolean">
+  Active state filter. Currently the API returns all active sites for your organization regardless of this value.
+</ParamField>
+
+## Response
+
+Returns an array of site objects.
+
+<ResponseField name="[]" type="object[]">
+  <Expandable title="Site object fields" defaultOpen>
+    <ResponseField name="id" type="string" required>
+      Unique identifier for the site (UUID).
+    </ResponseField>
+    <ResponseField name="originName" type="string" required>
+      The origin URL being proxied (e.g. `https://www.example.com`).
+    </ResponseField>
+    <ResponseField name="hackgatedName" type="string" required>
+      The `hackgate.io` subdomain provisioned for this site (e.g. `www-myorg.hackgate.io`).
+    </ResponseField>
+    <ResponseField name="isActive" type="boolean" required>
+      Whether the site is currently active and accepting researcher connections.
+    </ResponseField>
+    <ResponseField name="orgId" type="string" required>
+      Organization ID that owns this site.
+    </ResponseField>
+    <ResponseField name="cretedByUserId" type="string" required>
+      User ID of the account that created the site.
+    </ResponseField>
+    <ResponseField name="creationdDate" type="string" required>
+      ISO 8601 timestamp of when the site was created.
+    </ResponseField>
+    <ResponseField name="hasCustomList" type="boolean" required>
+      Whether a custom researcher allowlist is enabled for this site.
+    </ResponseField>
+    <ResponseField name="isDeploymentProgress" type="boolean" required>
+      `true` while the proxy infrastructure is being provisioned.
+    </ResponseField>
+    <ResponseField name="startDate" type="string">
+      Scheduled start date (ISO 8601). `null` if no schedule is set.
+    </ResponseField>
+    <ResponseField name="stopDate" type="string">
+      Scheduled stop date (ISO 8601). `null` if no schedule is set.
+    </ResponseField>
+    <ResponseField name="credentials" type="string">
+      Test credentials distributed to researchers. `null` if not set.
+    </ResponseField>
+    <ResponseField name="instructions" type="string">
+      Testing instructions distributed to researchers. `null` if not set.
+    </ResponseField>
+    <ResponseField name="rateLimit" type="string">
+      Rate limiting rule string. `null` if rate limiting is not configured.
+    </ResponseField>
+    <ResponseField name="blockList" type="string">
+      JSON-encoded string of active block rules. `null` if no rules are configured.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+## Example
+
+<RequestExample>
+
+```bash cURL
+curl "https://admin.hackgate.io/api/sites?isActive=true&searchTerm=example" \
+  -H "Authorization: Bearer <token>"
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+[
+  {
+    "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "originName": "https://www.example.com",
+    "hackgatedName": "www-myorg.hackgate.io",
+    "isActive": true,
+    "orgId": "org-uuid",
+    "cretedByUserId": "user-uuid",
+    "creationdDate": "2024-06-01T10:00:00Z",
+    "hasCustomList": false,
+    "isDeploymentProgress": false,
+    "startDate": null,
+    "stopDate": null,
+    "credentials": null,
+    "instructions": null,
+    "rateLimit": null,
+    "blockList": null
+  }
+]
+```
+
+</ResponseExample>

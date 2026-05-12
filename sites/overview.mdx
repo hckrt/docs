@@ -1,0 +1,76 @@
+---
+title: "HackGATE Sites: How proxied test environments work"
+description: "A HackGATE site is a managed reverse proxy that routes researcher traffic to your origin via a hackgate.net subdomain, keeping your real server private."
+---
+
+A HackGATE site is a reverse proxy that sits in front of your application. When you create a site, HackGATE provisions a unique subdomain — for example, `yourapp-yourorg.hackgate.net` — and forwards all incoming researcher traffic to your origin URL. Your real application is never exposed directly to researchers.
+
+## What is a HackGATE site
+
+Each site maps one origin URL to one HackGATEd subdomain:
+
+- **Origin** (`originName`): your application's URL, e.g. `https://www.example.com`
+- **Proxy** (`hackgatedName`): the HackGATE subdomain, e.g. `www-myorg.hackgate.net`
+
+Researchers connect only to the proxy subdomain. HackGATE handles authentication, rate limiting, block rules, and traffic logging before any request reaches your origin.
+
+## Site lifecycle
+
+| State | Description |
+| --- | --- |
+| **Creating** | You have submitted the origin URL. HackGATE is provisioning the proxy. |
+| **Deploying** | Deployment is in progress (`isDeploymentProgress: true`). The site is not yet reachable. |
+| **Active** | The proxy is live (`isActive: true`). Researchers can connect. |
+| **Disabled** | The proxy is offline (`isActive: false`). Requests return a default page. You can re-enable at any time. |
+
+After you create a site, all organization members receive an email. Deployment completes in approximately 4 minutes, at which point the site becomes active.
+
+## Key site properties
+
+| Property | Description |
+| --- | --- |
+| `originName` | The origin URL you provided when creating the site. |
+| `hackgatedName` | The auto-generated proxy subdomain on `hackgate.net`. |
+| `isActive` | Whether the proxy is currently accepting researcher connections. |
+| `isDeploymentProgress` | `true` while the site is still being provisioned. |
+| `startDate` / `stopDate` | Optional scheduled times to automatically enable or disable the site. |
+
+## Activity log
+
+HackGATE records an activity log for every site. Each entry contains a timestamp and one of three actions:
+
+- **Deployed** — the site finished provisioning and became available.
+- **Started** — the site was enabled (manually or via schedule).
+- **Stopped** — the site was disabled (manually or via schedule).
+
+## Usage tracking
+
+HackGATE tracks usage as the number of unique days in a given month that the site was active and received traffic. You can query this per site for any year and month.
+
+## Related pages
+
+<CardGroup cols={2}>
+  <Card title="Create a site" icon="plus" href="/sites/create">
+    Deploy a proxied test environment by pointing HackGATE at your origin URL.
+  </Card>
+
+  <Card title="Enable and disable" icon="toggle-on" href="/sites/enable-disable">
+    Toggle your site on or off to control researcher access.
+  </Card>
+
+  <Card title="Scheduling" icon="clock" href="/sites/scheduling">
+    Automate start and stop times to define precise pentest windows.
+  </Card>
+
+  <Card title="Credentials and instructions" icon="file-lines" href="/sites/credentials-instructions">
+    Provide researchers with login details and testing scope.
+  </Card>
+
+  <Card title="Hacker allowlist" icon="user-lock" href="/access/hacker-allowlist">
+    Control which researchers can connect to your site.
+  </Card>
+
+  <Card title="Traffic analytics" icon="chart-bar" href="/analytics/traffic">
+    Monitor researcher activity and API coverage across your environment.
+  </Card>
+</CardGroup>

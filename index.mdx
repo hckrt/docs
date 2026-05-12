@@ -1,0 +1,63 @@
+---
+title: "HackGATE: Managed Security Proxy for Pentest Programs"
+description: "HackGATE is a managed security proxy for pentest and bug bounty programs. Control researcher access, monitor traffic, and keep your production systems private."
+---
+
+HackGATE is a managed security proxy gateway by Hackrate. It lets your organization create controlled, authenticated test environments — called HackGATE sites — that sit in front of your real application and route researcher traffic through a monitored proxy. You control who can connect, how fast they can test, which paths are blocked, and when the environment is active.
+
+<CardGroup cols={2}>
+  <Card title="Quick Start" icon="rocket" href="/quickstart">
+    Create your first HackGATE site in minutes. Deploy a proxied test environment and invite researchers.
+  </Card>
+  <Card title="Authentication" icon="key" href="/authentication">
+    Learn how to authenticate with the HackGATE API using Clerk JWT tokens or organization API keys.
+  </Card>
+  <Card title="HackGATE Sites" icon="shield" href="/sites/overview">
+    Understand how HackGATE sites work, how to manage them, and how to configure access controls.
+  </Card>
+  <Card title="API Reference" icon="code" href="/api/overview">
+    Full reference for the HackGATE REST API — endpoints, request parameters, and response schemas.
+  </Card>
+</CardGroup>
+
+## How HackGATE works
+
+When you create a HackGATE site, the platform provisions a unique subdomain (e.g., `yourapp-yourorg.hackgate.io`) that proxies all traffic to your origin server. Researchers connect to the HackGATE subdomain — your production application is never exposed directly.
+
+<Steps>
+  <Step title="Create a HackGATE site">
+    Point HackGATE at your origin URL. The platform instantly provisions a proxied subdomain.
+  </Step>
+  <Step title="Configure access control">
+    Choose open access for all authenticated researchers, or maintain a custom allowlist of approved emails.
+  </Step>
+  <Step title="Set rate limits and block rules">
+    Protect sensitive paths and limit request rates to prevent accidental or malicious overload.
+  </Step>
+  <Step title="Monitor traffic and WAF events">
+    Watch real-time analytics, track which API endpoints have been tested, and review WAF alerts.
+  </Step>
+</Steps>
+
+## Key capabilities
+
+<CardGroup cols={2}>
+  <Card title="Access Control" icon="user-lock" href="/access/hacker-allowlist">
+    Allowlist specific researcher emails or open the environment to all verified users.
+  </Card>
+  <Card title="Traffic Analytics" icon="chart-bar" href="/analytics/traffic">
+    View most active users, path discovery, and traffic timelines across your test environment.
+  </Card>
+  <Card title="WAF Monitoring" icon="shield-halved" href="/analytics/waf">
+    ModSecurity-powered WAF events with attack type breakdown and rules timeline.
+  </Card>
+  <Card title="API Coverage" icon="list-check" href="/analytics/api-coverage">
+    Upload your OpenAPI schema and see which endpoints researchers have exercised.
+  </Card>
+  <Card title="Scheduled Testing" icon="clock" href="/sites/scheduling">
+    Set precise start and stop times so your test environment is only active when you want it.
+  </Card>
+  <Card title="Project Management" icon="folder" href="/projects/overview">
+    Group HackGATE sites into projects with timelines, owners, and metadata.
+  </Card>
+</CardGroup>

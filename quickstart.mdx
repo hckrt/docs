@@ -1,0 +1,67 @@
+---
+title: "Get started with HackGATE in 5 minutes"
+description: "Learn how to create your first HackGATE site, configure researcher access, and start monitoring traffic through the API or Admin Center dashboard."
+---
+
+This guide walks you through creating your first HackGATE site and sharing a proxied test environment with researchers.
+
+## Prerequisites
+
+- An account at [admin.hackgate.io](https://admin.hackgate.io)
+- Your origin URL — the application you want to proxy (e.g., `https://www.example.com`)
+- A valid API token — see [Authentication](/authentication) for instructions
+
+<Steps>
+  <Step title="Sign in to the Admin Center">
+    Go to [admin.hackgate.io](https://admin.hackgate.io) and sign in with your organization account.
+
+    Once signed in, you have access to your sites, analytics, and organization settings. You can also retrieve a Clerk JWT token from your session here for use in API requests.
+  </Step>
+  <Step title="Create a HackGATE site">
+    Send a `POST` request to `/api/sites` with your origin URL as `originName`. HackGATE will provision a proxied subdomain for you.
+
+    ```bash
+    curl -X POST https://admin.hackgate.io/api/sites \
+      -H "Authorization: Bearer <your-token>" \
+      -H "Content-Type: application/json" \
+      -d '{"originName": "https://www.example.com"}'
+    ```
+
+    The response includes a `hackgatedName` field with your new subdomain:
+
+    ```json
+    {
+      "id": "a1b2c3d4-...",
+      "originName": "https://www.example.com",
+      "hackgatedName": "www-myorg.hackgate.net",
+      "isActive": true,
+      "isDeploymentProgress": true
+    }
+    ```
+
+    <Note>
+      Your site takes approximately 4 minutes to deploy after creation. You will receive an email notification when it is ready. The site status will change from `deploying` to `active` once deployment completes.
+    </Note>
+  </Step>
+  <Step title="Share the HackGATEd URL with researchers">
+    Once your site is active, share the `hackgatedName` URL — for example, `https://www-myorg.hackgate.io` — with your researchers. This is the only URL they need.
+
+    Your origin server remains private. All researcher traffic passes through the HackGATE proxy, which enforces your configured access controls, rate limits, and block rules.
+  </Step>
+  <Step title="Monitor traffic in the dashboard">
+    Open the Admin Center dashboard to view real-time traffic analytics, or query the analytics API directly. For example, to get the most active researchers on your site:
+
+    ```bash
+    curl "https://admin.hackgate.io/api/analytics/getMostActiveUsers?url=www-myorg.hackgate.io&gte=2024-06-01T00:00:00Z&lte=2024-06-30T23:59:59Z" \
+      -H "Authorization: Bearer <your-token>"
+    ```
+
+    The analytics endpoints return traffic timelines, most-active users, path discovery data, and WAF events. See the [API reference](/api/overview) for the full list of available endpoints.
+  </Step>
+</Steps>
+
+## Next steps
+
+- [Configure authentication](/authentication) — set up API keys for automated workflows
+- [Manage site access](/sites/overview) — configure hacker allowlists, rate limits, and scheduled testing
+- [Review WAF monitoring](/analytics/waf) — understand what ModSecurity is flagging in your traffic

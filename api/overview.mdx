@@ -1,0 +1,87 @@
+---
+title: "HackGATE REST API — endpoints and conventions"
+description: "The HackGATE API is a JSON REST API. All endpoints require authentication and organization context. Base URL: https://admin.hackgate.io"
+---
+
+The HackGATE REST API gives you programmatic access to your sites, projects, analytics, and account settings. All endpoints follow consistent conventions described on this page.
+
+## Base URL
+
+```
+https://admin.hackgate.io
+```
+
+All API endpoints are served under this base URL, at paths matching `/api/[resource]`.
+
+## Request and response format
+
+All requests and responses use JSON. Set the `Content-Type` header on requests that include a body:
+
+```
+Content-Type: application/json
+```
+
+## Authentication
+
+Every request must include a valid Bearer token in the `Authorization` header:
+
+```
+Authorization: Bearer <token>
+```
+
+Your token must carry an organization ID. Requests without a valid org context are rejected with `401`. See [Authentication](/api/authentication) for the two supported token types and how to obtain them.
+
+## Interactive explorer
+
+You can explore and test all API endpoints interactively using the Swagger UI:
+
+**[https://admin.hackgate.io/swagger](https://admin.hackgate.io/swagger)**
+
+The explorer lets you authenticate with your token and send live requests directly from your browser.
+
+## HTTP status codes
+
+| Status | Meaning |
+|--------|---------|
+| `200 OK` | Request succeeded. |
+| `201 Created` | Resource was created successfully. |
+| `400 Bad Request` | Invalid input. The response body includes a `title` field with a description of the error. |
+| `401 Unauthorized` | Token is missing, invalid, expired, or does not carry an org context. |
+| `404 Not Found` | Resource does not exist or belongs to a different organization. |
+| `500 Internal Server Error` | Unexpected server error. |
+
+## Error response shape
+
+Error responses include a `title` field with a human-readable message and a `status` field matching the HTTP status code:
+
+```json
+{
+  "title": "Description of the error",
+  "status": 400
+}
+```
+
+Use the `title` field to diagnose validation errors and the `status` field to handle errors programmatically.
+
+## Explore the API
+
+<CardGroup cols={2}>
+  <Card title="List sites" icon="shield" href="/api/sites/list">
+    Retrieve all HackGATE sites in your organization.
+  </Card>
+  <Card title="List projects" icon="folder" href="/api/projects/list">
+    Retrieve all projects in your organization.
+  </Card>
+  <Card title="Traffic analytics" icon="chart-line" href="/api/analytics/traffic">
+    Query traffic events and request timelines for your sites.
+  </Card>
+  <Card title="WAF analytics" icon="shield-halved" href="/api/analytics/waf">
+    Query Web Application Firewall events for your sites.
+  </Card>
+  <Card title="Account" icon="user" href="/api/account">
+    Retrieve and manage your account details.
+  </Card>
+  <Card title="Billing" icon="credit-card" href="/api/billing">
+    Access billing information for your organization.
+  </Card>
+</CardGroup>

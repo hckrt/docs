@@ -1,0 +1,153 @@
+---
+title: "POST /api/sites — create a HackGATE site"
+description: "POST /api/sites creates a new proxied test environment. Provide your origin URL and HackGATE provisions a hackgate.io subdomain automatically."
+---
+
+Creates a new HackGATE site and begins provisioning the reverse proxy infrastructure. HackGATE derives the `hackgatedName` subdomain from your origin URL and organization slug automatically.
+
+## Request
+
+```
+POST https://admin.hackgate.io/api/sites
+```
+
+### Headers
+
+<ParamField header="Authorization" type="string" required>
+  Bearer token. Example: `Bearer <token>`
+</ParamField>
+
+<ParamField header="Content-Type" type="string" required>
+  Must be `application/json`.
+</ParamField>
+
+### Body
+
+<ParamField body="originName" type="string" required>
+  The origin URL to proxy. Must be a full FQDN including scheme (e.g. `https://www.example.com`). The following are not accepted:
+
+  - URLs with query strings (`?key=value`)
+  - URLs with non-standard ports
+  - Origins already registered under another site (duplicates are rejected)
+</ParamField>
+
+## Validation errors
+
+| Condition | Status | `title` |
+|-----------|--------|---------|
+| `originName` is missing or empty | `400` | Validation error message |
+| Origin URL is not a valid FQDN | `400` | Validation error message |
+| Origin URL is already registered | `400` | Duplicate origin error message |
+| URL contains a query string or non-standard port | `400` | Validation error message |
+
+## Response
+
+Returns the newly created site object.
+
+<ResponseField name="id" type="string" required>
+  Unique identifier for the site (UUID). Use this in all subsequent API calls.
+</ResponseField>
+
+<ResponseField name="originName" type="string" required>
+  The origin URL you provided.
+</ResponseField>
+
+<ResponseField name="hackgatedName" type="string" required>
+  The `hackgate.io` subdomain provisioned for this site (e.g. `www-myorg.hackgate.io`).
+</ResponseField>
+
+<ResponseField name="isActive" type="boolean" required>
+  Initial active state of the site after creation.
+</ResponseField>
+
+<ResponseField name="orgId" type="string" required>
+  Organization ID that owns this site.
+</ResponseField>
+
+<ResponseField name="cretedByUserId" type="string" required>
+  User ID of the account that created the site.
+</ResponseField>
+
+<ResponseField name="creationdDate" type="string" required>
+  ISO 8601 timestamp of when the site was created.
+</ResponseField>
+
+<ResponseField name="isDeploymentProgress" type="boolean" required>
+  `true` while proxy infrastructure is being provisioned. Deployment takes approximately 4 minutes. You cannot enable or disable the site until this is `false`.
+</ResponseField>
+
+<ResponseField name="hasCustomList" type="boolean" required>
+  Whether a custom researcher allowlist is enabled. `false` immediately after creation.
+</ResponseField>
+
+<ResponseField name="startDate" type="string">
+  Scheduled start date. `null` immediately after creation.
+</ResponseField>
+
+<ResponseField name="stopDate" type="string">
+  Scheduled stop date. `null` immediately after creation.
+</ResponseField>
+
+<ResponseField name="credentials" type="string">
+  Test credentials for researchers. `null` immediately after creation.
+</ResponseField>
+
+<ResponseField name="instructions" type="string">
+  Testing instructions for researchers. `null` immediately after creation.
+</ResponseField>
+
+<ResponseField name="rateLimit" type="string">
+  Rate limiting rule. `null` immediately after creation.
+</ResponseField>
+
+<ResponseField name="blockList" type="string">
+  JSON-encoded block rules. `null` immediately after creation.
+</ResponseField>
+
+<Note>
+After creation, `isDeploymentProgress` is `true` while HackGATE provisions the proxy. All organization members receive an email when creation starts and a second email when the site is live (~4 minutes later).
+</Note>
+
+## Example
+
+<RequestExample>
+
+```bash cURL
+curl -X POST https://admin.hackgate.io/api/sites \
+  -H "Authorization: Bearer <token>" \
+  -H "Content-Type: application/json" \
+  -d '{"originName": "https://www.example.com"}'
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{
+  "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+  "originName": "https://www.example.com",
+  "hackgatedName": "www-myorg.hackgate.io",
+  "isActive": true,
+  "orgId": "org-uuid",
+  "cretedByUserId": "user-uuid",
+  "creationdDate": "2024-06-01T10:00:00Z",
+  "hasCustomList": false,
+  "isDeploymentProgress": true,
+  "startDate": null,
+  "stopDate": null,
+  "credentials": null,
+  "instructions": null,
+  "rateLimit": null,
+  "blockList": null
+}
+```
+
+```json 400
+{
+  "title": "Origin URL is already registered.",
+  "status": 400
+}
+```
+
+</ResponseExample>

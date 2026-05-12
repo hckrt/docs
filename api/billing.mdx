@@ -1,0 +1,160 @@
+---
+title: "Billing API — get and update billing information"
+description: "GET and POST /api/billing retrieve and update your organization's billing details including business name, VAT, address, and billing email."
+---
+
+The billing endpoints let you read and update the billing profile attached to your organization. This profile is used for invoicing and must be accurate for VAT compliance. Use `GET /api/billing` to retrieve the current record and `POST /api/billing` to update it.
+
+## Get billing details
+
+```
+GET https://admin.hackgate.io/api/billing
+```
+
+Returns the current billing profile for your organization.
+
+### Request
+
+<ParamField header="Authorization" type="string" required>
+  Bearer token. See [Authentication](/api/authentication).
+</ParamField>
+
+### Response
+
+<ResponseField name="bussinessName" type="string">
+  Legal business name for invoicing.
+</ResponseField>
+
+<ResponseField name="vat" type="string">
+  VAT registration number (if applicable).
+</ResponseField>
+
+<ResponseField name="address" type="string">
+  Primary address line (street and number).
+</ResponseField>
+
+<ResponseField name="addressLine2" type="string">
+  Secondary address line (apartment, suite, floor, etc.).
+</ResponseField>
+
+<ResponseField name="city" type="string">
+  City.
+</ResponseField>
+
+<ResponseField name="zipCode" type="string">
+  Postal or ZIP code.
+</ResponseField>
+
+<ResponseField name="country" type="string">
+  Country.
+</ResponseField>
+
+<ResponseField name="state" type="string">
+  State, province, or region.
+</ResponseField>
+
+<ResponseField name="email" type="string">
+  Email address where invoices and billing notifications are sent.
+</ResponseField>
+
+### Example
+
+```bash
+curl https://admin.hackgate.io/api/billing \
+  -H "Authorization: Bearer <token>"
+```
+
+```json
+{
+  "bussinessName": "Acme Security Ltd.",
+  "vat": "GB123456789",
+  "address": "10 Pentest Lane",
+  "addressLine2": "Suite 4B",
+  "city": "London",
+  "zipCode": "EC1A 1BB",
+  "country": "United Kingdom",
+  "state": "England",
+  "email": "billing@acmesecurity.io"
+}
+```
+
+---
+
+## Update billing details
+
+```
+POST https://admin.hackgate.io/api/billing
+```
+
+Replaces the billing profile for your organization. Send all fields — any field you omit will be cleared.
+
+### Request
+
+<ParamField header="Authorization" type="string" required>
+  Bearer token. See [Authentication](/api/authentication).
+</ParamField>
+
+<ParamField header="Content-Type" type="string" required>
+  Must be `application/json`.
+</ParamField>
+
+### Body parameters
+
+<ParamField body="bussinessName" type="string">
+  Legal business name for invoicing.
+</ParamField>
+
+<ParamField body="vat" type="string">
+  VAT registration number. Leave blank if not VAT-registered.
+</ParamField>
+
+<ParamField body="address" type="string">
+  Primary address line (street and number).
+</ParamField>
+
+<ParamField body="addressLine2" type="string">
+  Secondary address line (apartment, suite, floor, etc.).
+</ParamField>
+
+<ParamField body="city" type="string">
+  City.
+</ParamField>
+
+<ParamField body="zipCode" type="string">
+  Postal or ZIP code.
+</ParamField>
+
+<ParamField body="country" type="string">
+  Country.
+</ParamField>
+
+<ParamField body="state" type="string">
+  State, province, or region.
+</ParamField>
+
+<ParamField body="email" type="string">
+  Email address for invoices and billing notifications.
+</ParamField>
+
+### Response
+
+Returns `200 OK` on success. The response body may be empty.
+
+### Example
+
+```bash
+curl -X POST https://admin.hackgate.io/api/billing \
+  -H "Authorization: Bearer <token>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "bussinessName": "Acme Security Ltd.",
+    "vat": "GB123456789",
+    "address": "10 Pentest Lane",
+    "addressLine2": "Suite 4B",
+    "city": "London",
+    "zipCode": "EC1A 1BB",
+    "country": "United Kingdom",
+    "state": "England",
+    "email": "billing@acmesecurity.io"
+  }'
+```

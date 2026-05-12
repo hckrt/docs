@@ -1,0 +1,262 @@
+---
+title: "GET /api/projects — list and retrieve projects"
+description: "GET /api/projects lists all security program projects for your organization. GET /api/projects/{id} retrieves a single project by ID."
+---
+
+Use these endpoints to retrieve your organization's HackGATE projects — the top-level containers that group sites, schedule engagements, and track vendors and owners for a security program. The list endpoint returns all projects visible to your organization; the by-ID endpoint returns a single project when you already know its identifier.
+
+## List all projects
+
+```
+GET https://admin.hackgate.io/api/projects
+```
+
+Returns an array of all projects belonging to your organization.
+
+### Request
+
+No query parameters or request body required.
+
+<ParamField header="Authorization" type="string" required>
+  Bearer token. See [Authentication](/api/authentication).
+</ParamField>
+
+### Response
+
+Returns a JSON array of project objects.
+
+<ResponseField name="id" type="string">
+  Unique identifier for the project.
+</ResponseField>
+
+<ResponseField name="orgId" type="string">
+  The organization that owns the project.
+</ResponseField>
+
+<ResponseField name="name" type="string">
+  Human-readable project name.
+</ResponseField>
+
+<ResponseField name="description" type="string">
+  Optional description of the project's scope or purpose.
+</ResponseField>
+
+<ResponseField name="note" type="string">
+  Free-text internal notes associated with the project.
+</ResponseField>
+
+<ResponseField name="launchDate" type="string">
+  ISO 8601 date-time when the engagement is scheduled to start.
+</ResponseField>
+
+<ResponseField name="endDate" type="string">
+  ISO 8601 date-time when the engagement is scheduled to end.
+</ResponseField>
+
+<ResponseField name="creationDate" type="string">
+  ISO 8601 date-time when the project record was created.
+</ResponseField>
+
+<ResponseField name="createdBy" type="string">
+  Identifier of the user who created the project.
+</ResponseField>
+
+<ResponseField name="accessType" type="string">
+  Access model for the engagement (for example, `authenticated` or `unauthenticated`).
+</ResponseField>
+
+<ResponseField name="location" type="string">
+  Geographic or network location context for the project.
+</ResponseField>
+
+<ResponseField name="owner" type="string">
+  Person or team responsible for the project.
+</ResponseField>
+
+<ResponseField name="reportDeadline" type="string">
+  ISO 8601 date-time by which the final report is due.
+</ResponseField>
+
+<ResponseField name="retestingEnd" type="string">
+  ISO 8601 date-time when the retesting window closes.
+</ResponseField>
+
+<ResponseField name="retestingLaunch" type="string">
+  ISO 8601 date-time when retesting begins.
+</ResponseField>
+
+<ResponseField name="type" type="string">
+  Engagement type, such as `pentest` or `bug-bounty`.
+</ResponseField>
+
+<ResponseField name="vendor" type="string">
+  Security vendor or testing firm assigned to the project.
+</ResponseField>
+
+<ResponseField name="isRetestNeeded" type="boolean">
+  Whether a retesting cycle is required after the initial engagement.
+</ResponseField>
+
+### Example
+
+```bash
+curl https://admin.hackgate.io/api/projects \
+  -H "Authorization: Bearer <token>"
+```
+
+```json
+[
+  {
+    "id": "proj_abc123",
+    "orgId": "org_xyz",
+    "name": "Q3 Web Application Pentest",
+    "description": "Full-scope penetration test of the customer portal.",
+    "note": "Review scope document before launch.",
+    "launchDate": "2025-07-01T09:00:00Z",
+    "endDate": "2025-07-14T17:00:00Z",
+    "creationDate": "2025-06-15T12:00:00Z",
+    "createdBy": "user_123",
+    "accessType": "authenticated",
+    "location": "US-East",
+    "owner": "security@example.com",
+    "reportDeadline": "2025-07-21T17:00:00Z",
+    "retestingEnd": "2025-08-04T17:00:00Z",
+    "retestingLaunch": "2025-07-28T09:00:00Z",
+    "type": "pentest",
+    "vendor": "AcmeSec",
+    "isRetestNeeded": true
+  }
+]
+```
+
+---
+
+## Get a project by ID
+
+```
+GET https://admin.hackgate.io/api/projects/{id}
+```
+
+Returns a single project object matching the provided `id`. Returns `404` if the project does not exist or belongs to a different organization.
+
+### Path parameters
+
+<ParamField path="id" type="string" required>
+  The unique identifier of the project to retrieve.
+</ParamField>
+
+<ParamField header="Authorization" type="string" required>
+  Bearer token. See [Authentication](/api/authentication).
+</ParamField>
+
+### Response
+
+Returns a single project object with the same fields as the list response above.
+
+### Example
+
+```bash
+curl https://admin.hackgate.io/api/projects/proj_abc123 \
+  -H "Authorization: Bearer <token>"
+```
+
+```json
+{
+  "id": "proj_abc123",
+  "orgId": "org_xyz",
+  "name": "Q3 Web Application Pentest",
+  "description": "Full-scope penetration test of the customer portal.",
+  "note": "Review scope document before launch.",
+  "launchDate": "2025-07-01T09:00:00Z",
+  "endDate": "2025-07-14T17:00:00Z",
+  "creationDate": "2025-06-15T12:00:00Z",
+  "createdBy": "user_123",
+  "accessType": "authenticated",
+  "location": "US-East",
+  "owner": "security@example.com",
+  "reportDeadline": "2025-07-21T17:00:00Z",
+  "retestingEnd": "2025-08-04T17:00:00Z",
+  "retestingLaunch": "2025-07-28T09:00:00Z",
+  "type": "pentest",
+  "vendor": "AcmeSec",
+  "isRetestNeeded": true
+}
+```
+
+---
+
+## List project items
+
+```
+GET https://admin.hackgate.io/api/projects/getProjectItems
+```
+
+Returns all items (individual sites or targets) associated with any project in your organization.
+
+### Response
+
+<ResponseField name="id" type="string">
+  Unique identifier for the project item.
+</ResponseField>
+
+<ResponseField name="orgId" type="string">
+  The organization that owns the item.
+</ResponseField>
+
+<ResponseField name="projectId" type="string">
+  The project this item belongs to.
+</ResponseField>
+
+<ResponseField name="name" type="string">
+  Name of the item (typically a site name or URL).
+</ResponseField>
+
+<ResponseField name="creationDate" type="string">
+  ISO 8601 date-time when the item was created.
+</ResponseField>
+
+<ResponseField name="createdBy" type="string">
+  Identifier of the user who created the item.
+</ResponseField>
+
+<ResponseField name="accessType" type="string">
+  Access model for this item.
+</ResponseField>
+
+<ResponseField name="location" type="string">
+  Geographic or network location for the item.
+</ResponseField>
+
+<ResponseField name="type" type="string">
+  Item type (for example, `web`, `api`, `mobile`).
+</ResponseField>
+
+### Example
+
+```bash
+curl https://admin.hackgate.io/api/projects/getProjectItems \
+  -H "Authorization: Bearer <token>"
+```
+
+---
+
+## Get a project item by ID
+
+```
+GET https://admin.hackgate.io/api/projects/getProjectItem/{id}
+```
+
+Returns a single project item matching the provided `id`.
+
+### Path parameters
+
+<ParamField path="id" type="string" required>
+  The unique identifier of the project item to retrieve.
+</ParamField>
+
+### Example
+
+```bash
+curl https://admin.hackgate.io/api/projects/getProjectItem/item_456 \
+  -H "Authorization: Bearer <token>"
+```

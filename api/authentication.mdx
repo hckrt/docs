@@ -1,0 +1,54 @@
+---
+title: "API authentication — tokens and API keys"
+description: "Pass a Clerk JWT or organization API key as a Bearer token on every request. All HackGATE API endpoints require authentication with org context."
+---
+
+Every request to the HackGATE API must include a valid token in the `Authorization` header using the Bearer scheme:
+
+```
+Authorization: Bearer <token>
+```
+
+The API supports two token types and automatically detects which one you are using based on the token format.
+
+## Token types
+
+**Clerk JWT** (prefix: `eyJ...`) — A short-lived JWT issued by your Admin Center browser session. Use this for interactive access, ad-hoc requests from your terminal, or testing.
+
+**Organization API key** (prefix: `ak_live_...`) — A long-lived token scoped to your organization. Use this for CI/CD pipelines, automation scripts, and any non-interactive workflow where a browser session is not available. Generate API keys in the Admin Center under **Settings > API Keys**.
+
+## Request examples
+
+<Tabs>
+  <Tab title="Clerk JWT">
+    Retrieve your JWT from the Admin Center session (available in your browser's local storage or via the Clerk SDK). Pass it as a Bearer token:
+
+    ```bash
+    curl https://admin.hackgate.io/api/sites \
+      -H "Authorization: Bearer eyJhbGciOiJSUzI1NiJ9..."
+    ```
+
+    Clerk JWTs expire with your session. If you receive a `401`, sign in again at [admin.hackgate.io](https://admin.hackgate.io) to get a fresh token.
+  </Tab>
+  <Tab title="Organization API key">
+    Pass your `ak_live_` key as a Bearer token:
+
+    ```bash
+    curl https://admin.hackgate.io/api/sites \
+      -H "Authorization: Bearer ak_live_XXXXXXXXXXXX"
+    ```
+
+    API keys do not expire automatically. Rotate or revoke them in **Settings > API Keys** if they are compromised.
+  </Tab>
+</Tabs>
+
+## Common errors
+
+| Error | Cause |
+|-------|-------|
+| `401 Unauthorized: "Missing organization context."` | Your token does not carry an org ID. Make sure you are using an org-scoped token — either a Clerk JWT from an active org session or an API key generated under the correct organization. |
+| `401 Unauthorized` (generic) | Your token is expired, invalid, revoked, or missing from the request. |
+
+<Warning>
+  Never expose your API keys in client-side code, public repositories, or anywhere that could be accessed by unauthorized parties. Treat your `ak_live_` key like a password. If a key is compromised, revoke it immediately in **Settings > API Keys** and generate a new one.
+</Warning>

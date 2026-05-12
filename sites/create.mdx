@@ -1,0 +1,70 @@
+---
+title: "Create a HackGATE site for your application"
+description: "Deploy a proxied test environment by pointing HackGATE at your origin URL. Your app's HackGATEd subdomain is provisioned automatically."
+---
+
+Creating a HackGATE site provisions a reverse proxy subdomain on `hackgate.net` that forwards traffic to your origin. You supply the origin URL; HackGATE generates the proxy subdomain automatically.
+
+## Requirements
+
+Before creating a site, confirm your origin URL meets these requirements:
+
+- **Full FQDN format**: the URL must include the scheme and hostname, e.g. `https://www.example.com`
+- **No query strings**: URLs containing `?key=value` parameters are not accepted
+- **No custom ports**: standard ports only (80 and 443); see below for custom port support
+- **Unique origin**: each origin URL can only be HackGATEd once across the platform
+
+<Warning>
+  Use the full FQDN format for your origin URL. URLs with query strings (e.g. `?key=value`) or non-standard ports will be rejected. If your application runs on a custom port, contact [support@hckrt.com](mailto:support@hckrt.com) before creating the site.
+</Warning>
+
+<Note>
+  For origins running on custom ports, contact [support@hckrt.com](mailto:support@hckrt.com). The HackGATE team will configure the proxy manually.
+</Note>
+
+## How the proxy subdomain is generated
+
+The `hackgatedName` is derived automatically from your origin URL:
+
+```text
+{first-subdomain}-{orgSlug}.hackgate.net
+```
+
+For example, if your origin is `https://www.example.com` and your organization slug is `myorg`, your proxy subdomain will be `www-myorg.hackgate.net`.
+
+## Create a site
+
+Send a `POST` request to `/api/sites` with your origin URL:
+
+```bash
+curl -X POST https://admin.hackgate.io/api/sites \
+  -H "Authorization: Bearer <token>" \
+  -H "Content-Type: application/json" \
+  -d '{"originName": "https://www.example.com"}'
+```
+
+### Response
+
+```json
+{
+  "id": "a1b2c3d4-...",
+  "originName": "https://www.example.com",
+  "hackgatedName": "www-myorg.hackgate.net",
+  "isActive": true,
+  "isDeploymentProgress": false,
+  "creationdDate": "2024-06-01T10:00:00Z"
+}
+```
+
+The response contains the site `id` you will use in all subsequent API calls for this site.
+
+## After creation
+
+Once you submit the request:
+
+1. All organization members receive an email confirming the site was created.
+2. `isDeploymentProgress` is `true` while HackGATE provisions the proxy infrastructure.
+3. Deployment completes in approximately 4 minutes. Members receive a second email when the site is live.
+4. The site becomes active and researchers can connect via the `hackgatedName` subdomain.
+
+You cannot enable or disable a site while `isDeploymentProgress` is `true`.

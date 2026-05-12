@@ -1,0 +1,77 @@
+---
+title: "Control researcher access with the hacker allowlist"
+description: "Restrict your HackGATE test environment to approved researcher emails or open it to all verified users using the hacker allowlist feature."
+---
+
+HackGATE gives you two modes for controlling which researchers can connect to your site. You can open the environment to any researcher, or maintain a custom allowlist of approved emails.
+
+## Access modes
+
+**Open access** (default): any researcher can connect to your site. You do not need to manage individual emails.
+
+**Custom allowlist**: only researchers whose email addresses you have explicitly added can connect. All other authenticated users are blocked at the proxy.
+
+## Switch between modes
+
+Use the `allowedHackerType` endpoint to toggle the mode for a site. Set `allowedHackerType` to `true` to enable the custom allowlist, or `false` to return to open access.
+
+```bash
+# Enable custom allowlist
+curl -X POST https://admin.hackgate.io/api/sites/allowedHackerType \
+  -H "Authorization: Bearer <token>" \
+  -H "Content-Type: application/json" \
+  -d '{"id": "SITE_ID", "allowedHackerType": true}'
+```
+
+```bash
+# Switch back to open access
+curl -X POST https://admin.hackgate.io/api/sites/allowedHackerType \
+  -H "Authorization: Bearer <token>" \
+  -H "Content-Type: application/json" \
+  -d '{"id": "SITE_ID", "allowedHackerType": false}'
+```
+
+## Add a researcher to the allowlist
+
+```bash
+curl -X POST https://admin.hackgate.io/api/sites/addHacker \
+  -H "Authorization: Bearer <token>" \
+  -H "Content-Type: application/json" \
+  -d '{"siteId": "SITE_ID", "email": "researcher@example.com"}'
+```
+
+The response returns the updated list of all researchers currently on the allowlist for the site.
+
+## View the current allowlist
+
+```bash
+curl https://admin.hackgate.io/api/sites/getHackers/SITE_ID \
+  -H "Authorization: Bearer <token>"
+```
+
+**Response:**
+
+```json
+[
+  {
+    "id": "HACKER_ENTRY_ID",
+    "email": "researcher@example.com",
+    "siteId": "SITE_ID"
+  }
+]
+```
+
+## Remove a researcher
+
+Use the `id` from the allowlist entry (returned by the `getHackers` endpoint) together with the researcher's email and site ID.
+
+```bash
+curl -X POST https://admin.hackgate.io/api/sites/removeHacker \
+  -H "Authorization: Bearer <token>" \
+  -H "Content-Type: application/json" \
+  -d '{"id": "HACKER_ENTRY_ID", "siteId": "SITE_ID", "email": "researcher@example.com"}'
+```
+
+<Note>
+  Custom allowlist mode requires researchers to authenticate with their registered email address. If you attempt to add a researcher who is already on the allowlist, the API returns a `400` error.
+</Note>

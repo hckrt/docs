@@ -1,0 +1,67 @@
+---
+title: "Track API endpoint coverage during security testing"
+description: "Upload your OpenAPI schema to HackGATE and see exactly which endpoints researchers have tested, with request counts per path and method."
+---
+
+API coverage lets you measure how thoroughly researchers have tested your API. Upload your OpenAPI schema to a HackGATE site, then query the coverage endpoint to see which defined paths and methods have been hit — and which have not.
+
+<Steps>
+  <Step title="Upload your OpenAPI schema">
+    Upload a valid OpenAPI 2.x or 3.x document to your HackGATE site using multipart form data. Replace `SITE_ID` with the ID of your site.
+
+    ```bash
+    curl -X POST https://admin.hackgate.io/api/sites/uploadOpenAPISchema \
+      -H "Authorization: Bearer <token>" \
+      -F "siteId=SITE_ID" \
+      -F "file=@openapi.json"
+    ```
+
+    Accepted file formats: `.json`, `.yaml`, `.yml`
+
+    On success, the response includes the stored file name and URL:
+
+    ```json
+    {
+      "message": "File uploaded successfully",
+      "fileName": "openapi.json",
+      "url": "..."
+    }
+    ```
+
+    <Note>
+      The uploaded schema must be a valid OpenAPI 2.x or 3.x document. Invalid documents return a 400 with validation errors.
+    </Note>
+  </Step>
+  <Step title="Query API coverage">
+    After researchers have been testing your site, query the coverage endpoint to see how many times each defined endpoint was hit.
+
+    ```bash
+    curl "https://admin.hackgate.io/api/analytics/getAPICoverage?url=www-myorg.hackgate.net&gte=2024-06-01T00:00:00Z&lte=2024-06-30T23:59:59Z" \
+      -H "Authorization: Bearer <token>"
+    ```
+
+    The response is an array of objects, one per defined route:
+
+    ```json
+    [
+      { "path": "/users/{id}", "method": "GET", "count": 42 },
+      { "path": "/users/{id}", "method": "DELETE", "count": 0 },
+      { "path": "/orders", "method": "POST", "count": 17 }
+    ]
+    ```
+
+    A `count` of `0` means the endpoint was not tested during the selected period.
+  </Step>
+  <Step title="Retrieve the schema with your hackgatedName as the host">
+    Fetch the stored schema at any time. HackGATE returns the original document with the `host` field replaced by your hackgatedName, so researchers can import it directly into their tools.
+
+    ```bash
+    curl https://admin.hackgate.io/api/sites/getAPIdefinition/SITE_ID \
+      -H "Authorization: Bearer <token>"
+    ```
+
+    <Tip>
+      Share this endpoint with researchers so they can import your API definition directly into Burp Suite, Postman, or other testing tools.
+    </Tip>
+  </Step>
+</Steps>

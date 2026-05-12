@@ -1,0 +1,154 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "name": "HackGATE",
+  "theme": "luma",
+  "logo": {
+    "light": "/images/Hackgatelogoblack.svg",
+    "dark": "/images/HackGATE™logowhite.svg"
+  },
+  "favicon": "https://media.brand.dev/10d968d6-149e-4c29-bd6d-360cf1ba32c0.jpg",
+  "colors": {
+    "primary": "#7F56D9",
+    "light": "#9E77ED",
+    "dark": "#040404"
+  },
+  "navbar": {
+    "primary": {
+      "type": "github",
+      "href": "https://github.com/hckrt/HackgateAdminCenter"
+    },
+    "links": [
+      {
+        "href": "https://www.hckrt.com/Home/RequestADemo",
+        "label": "Talk to us"
+      },
+      {
+        "href": "https://admin.hackgate.io",
+        "label": "Get started"
+      }
+    ]
+  },
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "Get Started",
+            "pages": [
+              "introduction",
+              "quickstart",
+              "authentication"
+            ]
+          },
+          {
+            "group": "HackGATE Sites",
+            "pages": [
+              "sites/overview",
+              "sites/create",
+              "sites/enable-disable",
+              "sites/scheduling",
+              "sites/credentials-instructions"
+            ]
+          },
+          {
+            "group": "Access Control",
+            "pages": [
+              "access/hacker-allowlist",
+              "access/rate-limiting",
+              "access/block-rules"
+            ]
+          },
+          {
+            "group": "Analytics & Monitoring",
+            "pages": [
+              "analytics/traffic",
+              "analytics/waf",
+              "analytics/api-coverage"
+            ]
+          },
+          {
+            "group": "Projects",
+            "pages": [
+              "projects/overview",
+              "projects/manage"
+            ],
+            "tag": "deprecated"
+          },
+          {
+            "group": "Organization & Billing",
+            "pages": [
+              "organization/settings",
+              "organization/billing"
+            ]
+          }
+        ],
+        "icon": "book"
+      },
+      {
+        "tab": "API Reference",
+        "groups": [
+          {
+            "group": "Overview",
+            "pages": [
+              "api/overview",
+              "api/authentication"
+            ]
+          },
+          {
+            "group": "Sites",
+            "pages": [
+              "api/sites/list",
+              "api/sites/create",
+              "api/sites/get",
+              "api/sites/enable",
+              "api/sites/disable",
+              "api/sites/hackers",
+              "api/sites/blocklist",
+              "api/sites/openapi-schema"
+            ]
+          },
+          {
+            "group": "Projects",
+            "pages": [
+              "api/projects/list",
+              "api/projects/create",
+              "api/projects/update"
+            ],
+            "tag": "deprecated"
+          },
+          {
+            "group": "Analytics",
+            "pages": [
+              "api/analytics/traffic",
+              "api/analytics/waf"
+            ]
+          },
+          {
+            "group": "Account & Org",
+            "pages": [
+              "api/account",
+              "api/organization",
+              "api/billing"
+            ]
+          }
+        ],
+        "openapi": "https://api-admin.hackgate.io/swagger/v2/swagger.json",
+        "icon": "code"
+      }
+    ]
+  },
+  "footer": {
+    "links": [
+      {
+        "header": "US Patent Applied #63/645,845",
+        "items": [
+          {
+            "label": "Website",
+            "href": "https://hackgate.io"
+          }
+        ]
+      }
+    ]
+  }
+}

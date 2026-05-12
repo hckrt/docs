@@ -1,0 +1,162 @@
+---
+title: "POST /api/projects — create a security project"
+description: "POST /api/projects creates a new HackGATE project to group sites under a named security program with timeline, owner, and vendor details."
+---
+
+Create a new project to define a security engagement — a pentest, bug bounty, or similar program. Projects act as containers that group HackGATE sites, set timelines, assign ownership, and track vendor relationships. Once created, you can attach project items and configure retesting schedules.
+
+## Endpoint
+
+```
+POST https://admin.hackgate.io/api/projects
+```
+
+## Request
+
+<ParamField header="Authorization" type="string" required>
+  Bearer token. See [Authentication](/api/authentication).
+</ParamField>
+
+<ParamField header="Content-Type" type="string" required>
+  Must be `application/json`.
+</ParamField>
+
+### Body parameters
+
+<ParamField body="name" type="string" required>
+  A human-readable name for the project. This appears in the Admin Center and in reports.
+</ParamField>
+
+<ParamField body="description" type="string">
+  A description of the project's scope or purpose.
+</ParamField>
+
+<ParamField body="note" type="string">
+  Free-text internal notes. Not included in reports.
+</ParamField>
+
+<ParamField body="launchDate" type="string">
+  ISO 8601 date-time when the engagement is scheduled to start (for example, `2025-07-01T09:00:00Z`).
+</ParamField>
+
+<ParamField body="endDate" type="string">
+  ISO 8601 date-time when the engagement is scheduled to end.
+</ParamField>
+
+## Response
+
+Returns the newly created project object with all fields populated, including server-assigned values.
+
+<ResponseField name="id" type="string">
+  Unique identifier assigned to the project.
+</ResponseField>
+
+<ResponseField name="orgId" type="string">
+  The organization that owns the project.
+</ResponseField>
+
+<ResponseField name="name" type="string">
+  The project name you provided.
+</ResponseField>
+
+<ResponseField name="description" type="string">
+  The description you provided.
+</ResponseField>
+
+<ResponseField name="note" type="string">
+  The internal notes you provided.
+</ResponseField>
+
+<ResponseField name="launchDate" type="string">
+  ISO 8601 launch date.
+</ResponseField>
+
+<ResponseField name="endDate" type="string">
+  ISO 8601 end date.
+</ResponseField>
+
+<ResponseField name="creationDate" type="string">
+  ISO 8601 date-time when the project was created on the server.
+</ResponseField>
+
+<ResponseField name="createdBy" type="string">
+  Identifier of the authenticated user who made the request.
+</ResponseField>
+
+<ResponseField name="accessType" type="string">
+  Access model. Defaults to `null` until updated.
+</ResponseField>
+
+<ResponseField name="location" type="string">
+  Location context. Defaults to `null` until updated.
+</ResponseField>
+
+<ResponseField name="owner" type="string">
+  Project owner. Defaults to `null` until updated.
+</ResponseField>
+
+<ResponseField name="reportDeadline" type="string">
+  Report deadline. Defaults to `null` until updated.
+</ResponseField>
+
+<ResponseField name="retestingEnd" type="string">
+  Retesting window end. Defaults to `null` until updated.
+</ResponseField>
+
+<ResponseField name="retestingLaunch" type="string">
+  Retesting window start. Defaults to `null` until updated.
+</ResponseField>
+
+<ResponseField name="type" type="string">
+  Engagement type. Defaults to `null` until updated.
+</ResponseField>
+
+<ResponseField name="vendor" type="string">
+  Assigned vendor. Defaults to `null` until updated.
+</ResponseField>
+
+<ResponseField name="isRetestNeeded" type="boolean">
+  Whether retesting is required. Defaults to `false` until updated.
+</ResponseField>
+
+## Example
+
+```bash
+curl -X POST https://admin.hackgate.io/api/projects \
+  -H "Authorization: Bearer <token>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Q3 Web Application Pentest",
+    "description": "Full-scope penetration test of the customer portal.",
+    "note": "Review scope document before launch.",
+    "launchDate": "2025-07-01T09:00:00Z",
+    "endDate": "2025-07-14T17:00:00Z"
+  }'
+```
+
+```json
+{
+  "id": "proj_abc123",
+  "orgId": "org_xyz",
+  "name": "Q3 Web Application Pentest",
+  "description": "Full-scope penetration test of the customer portal.",
+  "note": "Review scope document before launch.",
+  "launchDate": "2025-07-01T09:00:00Z",
+  "endDate": "2025-07-14T17:00:00Z",
+  "creationDate": "2025-06-15T12:00:00Z",
+  "createdBy": "user_123",
+  "accessType": null,
+  "location": null,
+  "owner": null,
+  "reportDeadline": null,
+  "retestingEnd": null,
+  "retestingLaunch": null,
+  "type": null,
+  "vendor": null,
+  "isRetestNeeded": false
+}
+```
+
+<Info>
+  To set fields such as `owner`, `vendor`, `type`, and retesting dates, use [PUT /api/projects](/api/projects/update) after creation.
+</Info>
