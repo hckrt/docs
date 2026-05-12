@@ -13,10 +13,6 @@
     "dark": "#040404"
   },
   "navbar": {
-    "primary": {
-      "type": "github",
-      "href": "https://github.com/hckrt/HackgateAdminCenter"
-    },
     "links": [
       {
         "href": "https://www.hckrt.com/Home/RequestADemo",
