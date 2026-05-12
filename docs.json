@@ -133,18 +133,5 @@
         "icon": "code"
       }
     ]
-  },
-  "footer": {
-    "links": [
-      {
-        "header": "US Patent Applied #63/645,845",
-        "items": [
-          {
-            "label": "Website",
-            "href": "https://hackgate.io"
-          }
-        ]
-      }
-    ]
   }
 }
