@@ -17,7 +17,7 @@ Use the `allowedHackerType` endpoint to toggle the mode for a site. Set `allowed
 
 ```bash
 # Enable custom allowlist
-curl -X POST https://admin.hackgate.io/api/sites/allowedHackerType \
+curl -X POST https://api-admin.hackgate.io/api/sites/allowedHackerType \
   -H "Authorization: Bearer <token>" \
   -H "Content-Type: application/json" \
   -d '{"id": "SITE_ID", "allowedHackerType": true}'
@@ -25,7 +25,7 @@ curl -X POST https://admin.hackgate.io/api/sites/allowedHackerType \
 
 ```bash
 # Switch back to open access
-curl -X POST https://admin.hackgate.io/api/sites/allowedHackerType \
+curl -X POST https://api-admin.hackgate.io/api/sites/allowedHackerType \
   -H "Authorization: Bearer <token>" \
   -H "Content-Type: application/json" \
   -d '{"id": "SITE_ID", "allowedHackerType": false}'
@@ -34,7 +34,7 @@ curl -X POST https://admin.hackgate.io/api/sites/allowedHackerType \
 ## Add a researcher to the allowlist
 
 ```bash
-curl -X POST https://admin.hackgate.io/api/sites/addHacker \
+curl -X POST https://api-admin.hackgate.io/api/sites/addHacker \
   -H "Authorization: Bearer <token>" \
   -H "Content-Type: application/json" \
   -d '{"siteId": "SITE_ID", "email": "researcher@example.com"}'
@@ -45,7 +45,7 @@ The response returns the updated list of all researchers currently on the allowl
 ## View the current allowlist
 
 ```bash
-curl https://admin.hackgate.io/api/sites/getHackers/SITE_ID \
+curl https://api-admin.hackgate.io/api/sites/getHackers/SITE_ID \
   -H "Authorization: Bearer <token>"
 ```
 
@@ -66,7 +66,7 @@ curl https://admin.hackgate.io/api/sites/getHackers/SITE_ID \
 Use the `id` from the allowlist entry (returned by the `getHackers` endpoint) together with the researcher's email and site ID.
 
 ```bash
-curl -X POST https://admin.hackgate.io/api/sites/removeHacker \
+curl -X POST https://api-admin.hackgate.io/api/sites/removeHacker \
   -H "Authorization: Bearer <token>" \
   -H "Content-Type: application/json" \
   -d '{"id": "HACKER_ENTRY_ID", "siteId": "SITE_ID", "email": "researcher@example.com"}'

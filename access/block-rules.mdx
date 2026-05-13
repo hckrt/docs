@@ -17,7 +17,7 @@ Block rules let you restrict access to certain paths and HTTP methods in your te
 ## Retrieve current block rules
 
 ```bash
-curl https://admin.hackgate.io/api/sites/SITE_ID/blocklist \
+curl https://api-admin.hackgate.io/api/sites/SITE_ID/blocklist \
   -H "Authorization: Bearer <token>"
 ```
 
@@ -34,7 +34,7 @@ The `blockListJson` value is a JSON-encoded string containing the array of block
 The `POST /api/sites/blocklist` endpoint replaces the entire block rule list for a site. Construct your full desired list and submit it as a JSON-encoded string in the `blockListJson` field.
 
 ```bash
-curl -X POST https://admin.hackgate.io/api/sites/blocklist \
+curl -X POST https://api-admin.hackgate.io/api/sites/blocklist \
   -H "Authorization: Bearer <token>" \
   -H "Content-Type: application/json" \
   -d '{
@@ -46,7 +46,7 @@ curl -X POST https://admin.hackgate.io/api/sites/blocklist \
 To clear all block rules, set `blockListJson` to an empty array:
 
 ```bash
-curl -X POST https://admin.hackgate.io/api/sites/blocklist \
+curl -X POST https://api-admin.hackgate.io/api/sites/blocklist \
   -H "Authorization: Bearer <token>" \
   -H "Content-Type: application/json" \
   -d '{"siteId": "SITE_ID", "blockListJson": "[]"}'

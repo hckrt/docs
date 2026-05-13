@@ -17,7 +17,7 @@ Returns all researchers currently on the allowlist for a site.
 ### Request
 
 ```
-GET https://admin.hackgate.io/api/sites/getHackers/{id}
+GET https://api-admin.hackgate.io/api/sites/getHackers/{id}
 ```
 
 #### Headers
@@ -55,7 +55,7 @@ Returns an array of allowlist entries.
 <RequestExample>
 
 ```bash cURL
-curl https://admin.hackgate.io/api/sites/getHackers/a1b2c3d4-e5f6-7890-abcd-ef1234567890 \
+curl https://api-admin.hackgate.io/api/sites/getHackers/a1b2c3d4-e5f6-7890-abcd-ef1234567890 \
   -H "Authorization: Bearer <token>"
 ```
 
@@ -90,7 +90,7 @@ Adds a researcher's email to the allowlist. Returns the full updated allowlist.
 ### Request
 
 ```
-POST https://admin.hackgate.io/api/sites/addHacker
+POST https://api-admin.hackgate.io/api/sites/addHacker
 ```
 
 #### Headers
@@ -136,7 +136,7 @@ Returns the complete updated allowlist after the addition.
 <RequestExample>
 
 ```bash cURL
-curl -X POST https://admin.hackgate.io/api/sites/addHacker \
+curl -X POST https://api-admin.hackgate.io/api/sites/addHacker \
   -H "Authorization: Bearer <token>" \
   -H "Content-Type: application/json" \
   -d '{"siteId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890", "email": "alice@example.com"}'
@@ -175,7 +175,7 @@ Removes a researcher from the allowlist. Use the `id` returned by `getHackers` t
 ### Request
 
 ```
-POST https://admin.hackgate.io/api/sites/removeHacker
+POST https://api-admin.hackgate.io/api/sites/removeHacker
 ```
 
 #### Headers
@@ -211,7 +211,7 @@ Returns `200` on success. No body is returned.
 <RequestExample>
 
 ```bash cURL
-curl -X POST https://admin.hackgate.io/api/sites/removeHacker \
+curl -X POST https://api-admin.hackgate.io/api/sites/removeHacker \
   -H "Authorization: Bearer <token>" \
   -H "Content-Type: application/json" \
   -d '{
@@ -243,7 +243,7 @@ Set `allowedHackerType` to `true` to enforce the allowlist. Set it to `false` to
 ### Request
 
 ```
-POST https://admin.hackgate.io/api/sites/allowedHackerType
+POST https://api-admin.hackgate.io/api/sites/allowedHackerType
 ```
 
 #### Headers
@@ -276,7 +276,7 @@ Returns `200` on success. No body is returned.
 
 ```bash cURL
 # Enable allowlist-only access
-curl -X POST https://admin.hackgate.io/api/sites/allowedHackerType \
+curl -X POST https://api-admin.hackgate.io/api/sites/allowedHackerType \
   -H "Authorization: Bearer <token>" \
   -H "Content-Type: application/json" \
   -d '{"id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890", "allowedHackerType": true}'

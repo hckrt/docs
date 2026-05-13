@@ -8,7 +8,7 @@ Create a new project to define a security engagement — a pentest, bug bounty, 
 ## Endpoint
 
 ```
-POST https://admin.hackgate.io/api/projects
+POST https://api-admin.hackgate.io/api/projects
 ```
 
 ## Request
@@ -122,7 +122,7 @@ Returns the newly created project object with all fields populated, including se
 ## Example
 
 ```bash
-curl -X POST https://admin.hackgate.io/api/projects \
+curl -X POST https://api-admin.hackgate.io/api/projects \
   -H "Authorization: Bearer <token>" \
   -H "Content-Type: application/json" \
   -d '{

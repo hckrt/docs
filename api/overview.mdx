@@ -1,6 +1,6 @@
 ---
 title: "HackGATE REST API — endpoints and conventions"
-description: "The HackGATE API is a JSON REST API. All endpoints require authentication and organization context. Base URL: https://admin.hackgate.io"
+description: "The HackGATE API is a JSON REST API. All endpoints require authentication and organization context. Base URL: https://api-admin.hackgate.io"
 ---
 
 The HackGATE REST API gives you programmatic access to your sites, projects, analytics, and account settings. All endpoints follow consistent conventions described on this page.
@@ -8,7 +8,7 @@ The HackGATE REST API gives you programmatic access to your sites, projects, ana
 ## Base URL
 
 ```
-https://admin.hackgate.io
+https://api-admin.hackgate.io
 ```
 
 All API endpoints are served under this base URL, at paths matching `/api/[resource]`.
@@ -35,7 +35,7 @@ Your token must carry an organization ID. Requests without a valid org context a
 
 You can explore and test all API endpoints interactively using the Swagger UI:
 
-**[https://admin.hackgate.io/swagger](https://admin.hackgate.io/swagger)**
+**[https://api-admin.hackgate.io/swagger](https://api-admin.hackgate.io/swagger)**
 
 The explorer lets you authenticate with your token and send live requests directly from your browser.
 

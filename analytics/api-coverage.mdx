@@ -10,7 +10,7 @@ API coverage lets you measure how thoroughly researchers have tested your API. U
     Upload a valid OpenAPI 2.x or 3.x document to your HackGATE site using multipart form data. Replace `SITE_ID` with the ID of your site.
 
     ```bash
-    curl -X POST https://admin.hackgate.io/api/sites/uploadOpenAPISchema \
+    curl -X POST https://api-admin.hackgate.io/api/sites/uploadOpenAPISchema \
       -H "Authorization: Bearer <token>" \
       -F "siteId=SITE_ID" \
       -F "file=@openapi.json"
@@ -36,7 +36,7 @@ API coverage lets you measure how thoroughly researchers have tested your API. U
     After researchers have been testing your site, query the coverage endpoint to see how many times each defined endpoint was hit.
 
     ```bash
-    curl "https://admin.hackgate.io/api/analytics/getAPICoverage?url=www-myorg.hackgate.net&gte=2024-06-01T00:00:00Z&lte=2024-06-30T23:59:59Z" \
+    curl "https://api-admin.hackgate.io/api/analytics/getAPICoverage?url=www-myorg.hackgate.net&gte=2024-06-01T00:00:00Z&lte=2024-06-30T23:59:59Z" \
       -H "Authorization: Bearer <token>"
     ```
 
@@ -56,7 +56,7 @@ API coverage lets you measure how thoroughly researchers have tested your API. U
     Fetch the stored schema at any time. HackGATE returns the original document with the `host` field replaced by your hackgatedName, so researchers can import it directly into their tools.
 
     ```bash
-    curl https://admin.hackgate.io/api/sites/getAPIdefinition/SITE_ID \
+    curl https://api-admin.hackgate.io/api/sites/getAPIdefinition/SITE_ID \
       -H "Authorization: Bearer <token>"
     ```
 

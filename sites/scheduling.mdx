@@ -16,7 +16,7 @@ Use scheduling to enforce a fixed pentest window. Combine a start and stop time 
 Send a `POST` request to `/api/sites/start` with the site `id` and the desired `startDate`:
 
 ```bash
-curl -X POST https://admin.hackgate.io/api/sites/start \
+curl -X POST https://api-admin.hackgate.io/api/sites/start \
   -H "Authorization: Bearer <token>" \
   -H "Content-Type: application/json" \
   -d '{"id": "SITE_ID", "startDate": "2024-07-01T08:00:00Z"}'
@@ -29,7 +29,7 @@ At the scheduled time, HackGATE enables the site and records a **Started** event
 Send a `POST` request to `/api/sites/stop` with the site `id` and the desired `stopDate`:
 
 ```bash
-curl -X POST https://admin.hackgate.io/api/sites/stop \
+curl -X POST https://api-admin.hackgate.io/api/sites/stop \
   -H "Authorization: Bearer <token>" \
   -H "Content-Type: application/json" \
   -d '{"id": "SITE_ID", "stopDate": "2024-07-05T18:00:00Z"}'

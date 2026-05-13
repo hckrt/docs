@@ -8,7 +8,7 @@ Use these endpoints to retrieve your organization's HackGATE projects — the to
 ## List all projects
 
 ```
-GET https://admin.hackgate.io/api/projects
+GET https://api-admin.hackgate.io/api/projects
 ```
 
 Returns an array of all projects belonging to your organization.
@@ -100,7 +100,7 @@ Returns a JSON array of project objects.
 ### Example
 
 ```bash
-curl https://admin.hackgate.io/api/projects \
+curl https://api-admin.hackgate.io/api/projects \
   -H "Authorization: Bearer <token>"
 ```
 
@@ -134,7 +134,7 @@ curl https://admin.hackgate.io/api/projects \
 ## Get a project by ID
 
 ```
-GET https://admin.hackgate.io/api/projects/{id}
+GET https://api-admin.hackgate.io/api/projects/{id}
 ```
 
 Returns a single project object matching the provided `id`. Returns `404` if the project does not exist or belongs to a different organization.
@@ -156,7 +156,7 @@ Returns a single project object with the same fields as the list response above.
 ### Example
 
 ```bash
-curl https://admin.hackgate.io/api/projects/proj_abc123 \
+curl https://api-admin.hackgate.io/api/projects/proj_abc123 \
   -H "Authorization: Bearer <token>"
 ```
 
@@ -188,7 +188,7 @@ curl https://admin.hackgate.io/api/projects/proj_abc123 \
 ## List project items
 
 ```
-GET https://admin.hackgate.io/api/projects/getProjectItems
+GET https://api-admin.hackgate.io/api/projects/getProjectItems
 ```
 
 Returns all items (individual sites or targets) associated with any project in your organization.
@@ -234,7 +234,7 @@ Returns all items (individual sites or targets) associated with any project in y
 ### Example
 
 ```bash
-curl https://admin.hackgate.io/api/projects/getProjectItems \
+curl https://api-admin.hackgate.io/api/projects/getProjectItems \
   -H "Authorization: Bearer <token>"
 ```
 
@@ -243,7 +243,7 @@ curl https://admin.hackgate.io/api/projects/getProjectItems \
 ## Get a project item by ID
 
 ```
-GET https://admin.hackgate.io/api/projects/getProjectItem/{id}
+GET https://api-admin.hackgate.io/api/projects/getProjectItem/{id}
 ```
 
 Returns a single project item matching the provided `id`.
@@ -257,6 +257,6 @@ Returns a single project item matching the provided `id`.
 ### Example
 
 ```bash
-curl https://admin.hackgate.io/api/projects/getProjectItem/item_456 \
+curl https://api-admin.hackgate.io/api/projects/getProjectItem/item_456 \
   -H "Authorization: Bearer <token>"
 ```

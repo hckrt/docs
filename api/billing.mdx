@@ -8,7 +8,7 @@ The billing endpoints let you read and update the billing profile attached to yo
 ## Get billing details
 
 ```
-GET https://admin.hackgate.io/api/billing
+GET https://api-admin.hackgate.io/api/billing
 ```
 
 Returns the current billing profile for your organization.
@@ -60,7 +60,7 @@ Returns the current billing profile for your organization.
 ### Example
 
 ```bash
-curl https://admin.hackgate.io/api/billing \
+curl https://api-admin.hackgate.io/api/billing \
   -H "Authorization: Bearer <token>"
 ```
 
@@ -83,7 +83,7 @@ curl https://admin.hackgate.io/api/billing \
 ## Update billing details
 
 ```
-POST https://admin.hackgate.io/api/billing
+POST https://api-admin.hackgate.io/api/billing
 ```
 
 Replaces the billing profile for your organization. Send all fields — any field you omit will be cleared.
@@ -143,7 +143,7 @@ Returns `200 OK` on success. The response body may be empty.
 ### Example
 
 ```bash
-curl -X POST https://admin.hackgate.io/api/billing \
+curl -X POST https://api-admin.hackgate.io/api/billing \
   -H "Authorization: Bearer <token>" \
   -H "Content-Type: application/json" \
   -d '{

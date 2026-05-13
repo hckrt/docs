@@ -29,13 +29,13 @@ All WAF analytics endpoints require a valid Bearer token in the `Authorization` 
 ## GET /api/analytics/getWAFMessages
 
 ```
-GET https://admin.hackgate.io/api/analytics/getWAFMessages
+GET https://api-admin.hackgate.io/api/analytics/getWAFMessages
 ```
 
 Returns the individual ModSecurity rule messages triggered on the site within the time range. Each record represents a rule match, including the rule ID, message, and the request that triggered it.
 
 ```bash
-curl "https://admin.hackgate.io/api/analytics/getWAFMessages?url=my-site&gte=2025-07-01T00:00:00Z&lte=2025-07-14T23:59:59Z" \
+curl "https://api-admin.hackgate.io/api/analytics/getWAFMessages?url=my-site&gte=2025-07-01T00:00:00Z&lte=2025-07-14T23:59:59Z" \
   -H "Authorization: Bearer <token>"
 ```
 
@@ -45,7 +45,7 @@ curl "https://admin.hackgate.io/api/analytics/getWAFMessages?url=my-site&gte=202
 ## GET /api/analytics/getWAFAttackTypes
 
 ```
-GET https://admin.hackgate.io/api/analytics/getWAFAttackTypes
+GET https://api-admin.hackgate.io/api/analytics/getWAFAttackTypes
 ```
 
 Returns a breakdown of detected attack categories with counts for each type. Attack categories are returned as human-readable strings:
@@ -60,7 +60,7 @@ Returns a breakdown of detected attack categories with counts for each type. Att
 | Remote File Inclusion (RFI) |
 
 ```bash
-curl "https://admin.hackgate.io/api/analytics/getWAFAttackTypes?url=my-site&gte=2025-07-01T00:00:00Z&lte=2025-07-14T23:59:59Z" \
+curl "https://api-admin.hackgate.io/api/analytics/getWAFAttackTypes?url=my-site&gte=2025-07-01T00:00:00Z&lte=2025-07-14T23:59:59Z" \
   -H "Authorization: Bearer <token>"
 ```
 
@@ -81,7 +81,7 @@ curl "https://admin.hackgate.io/api/analytics/getWAFAttackTypes?url=my-site&gte=
 ## GET /api/analytics/getAPICoverage
 
 ```
-GET https://admin.hackgate.io/api/analytics/getAPICoverage
+GET https://api-admin.hackgate.io/api/analytics/getAPICoverage
 ```
 
 Returns the set of API paths and HTTP methods that researchers accessed through the proxy, along with request counts. Use this to measure how much of your API surface was exercised during an engagement.
@@ -119,7 +119,7 @@ Returns an array of objects, one per unique path and method combination observed
 ### Example
 
 ```bash
-curl "https://admin.hackgate.io/api/analytics/getAPICoverage?url=my-site&gte=2025-07-01T00:00:00Z&lte=2025-07-14T23:59:59Z" \
+curl "https://api-admin.hackgate.io/api/analytics/getAPICoverage?url=my-site&gte=2025-07-01T00:00:00Z&lte=2025-07-14T23:59:59Z" \
   -H "Authorization: Bearer <token>"
 ```
 

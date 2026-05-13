@@ -8,7 +8,7 @@ HackGATE stores a single set of billing details per organization. These details 
 ## Retrieve current billing information
 
 ```bash
-curl https://admin.hackgate.io/api/billing \
+curl https://api-admin.hackgate.io/api/billing \
   -H "Authorization: Bearer <token>"
 ```
 
@@ -33,7 +33,7 @@ curl https://admin.hackgate.io/api/billing \
 Send a POST request to `/api/billing` with the fields you want to set. All fields are optional per update — only the fields you include will be written.
 
 ```bash
-curl -X POST https://admin.hackgate.io/api/billing \
+curl -X POST https://api-admin.hackgate.io/api/billing \
   -H "Authorization: Bearer <token>" \
   -H "Content-Type: application/json" \
   -d '{

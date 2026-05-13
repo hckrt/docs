@@ -10,7 +10,7 @@ Rate limiting controls how many requests researchers can send within a given tim
 Rate limiting is configured per site by providing a policy name. The policy name maps to a rate limiter configuration on the proxy — for example, `"fixed"` applies a fixed-window policy.
 
 ```bash
-curl -X POST https://admin.hackgate.io/api/sites/setRateLimiting \
+curl -X POST https://api-admin.hackgate.io/api/sites/setRateLimiting \
   -H "Authorization: Bearer <token>" \
   -H "Content-Type: application/json" \
   -d '{"id": "SITE_ID", "rateLimit": "fixed"}'

@@ -8,7 +8,7 @@ Deactivates a HackGATE site. The proxy subdomain immediately stops forwarding tr
 ## Request
 
 ```
-GET https://admin.hackgate.io/api/sites/disable/{id}
+GET https://api-admin.hackgate.io/api/sites/disable/{id}
 ```
 
 ### Headers
@@ -99,7 +99,7 @@ Returns the updated site object with `isActive` set to `false`.
 <RequestExample>
 
 ```bash cURL
-curl https://admin.hackgate.io/api/sites/disable/a1b2c3d4-e5f6-7890-abcd-ef1234567890 \
+curl https://api-admin.hackgate.io/api/sites/disable/a1b2c3d4-e5f6-7890-abcd-ef1234567890 \
   -H "Authorization: Bearer <token>"
 ```
 

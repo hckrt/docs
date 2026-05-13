@@ -35,13 +35,13 @@ Most single-site endpoints share these query parameters:
 ### GET /api/analytics/getTotalRequest
 
 ```
-GET https://admin.hackgate.io/api/analytics/getTotalRequest
+GET https://api-admin.hackgate.io/api/analytics/getTotalRequest
 ```
 
 Returns the total number of requests made through the HackGATE proxy for the specified site and time range.
 
 ```bash
-curl "https://admin.hackgate.io/api/analytics/getTotalRequest?url=my-site&gte=2025-07-01T00:00:00Z&lte=2025-07-14T23:59:59Z" \
+curl "https://api-admin.hackgate.io/api/analytics/getTotalRequest?url=my-site&gte=2025-07-01T00:00:00Z&lte=2025-07-14T23:59:59Z" \
   -H "Authorization: Bearer <token>"
 ```
 
@@ -51,13 +51,13 @@ curl "https://admin.hackgate.io/api/analytics/getTotalRequest?url=my-site&gte=20
 ### GET /api/analytics/getMostActiveUsers
 
 ```
-GET https://admin.hackgate.io/api/analytics/getMostActiveUsers
+GET https://api-admin.hackgate.io/api/analytics/getMostActiveUsers
 ```
 
 Returns a ranked list of the researchers (by identity) who sent the most requests through the proxy during the specified time window.
 
 ```bash
-curl "https://admin.hackgate.io/api/analytics/getMostActiveUsers?url=my-site&gte=2025-07-01T00:00:00Z&lte=2025-07-14T23:59:59Z" \
+curl "https://api-admin.hackgate.io/api/analytics/getMostActiveUsers?url=my-site&gte=2025-07-01T00:00:00Z&lte=2025-07-14T23:59:59Z" \
   -H "Authorization: Bearer <token>"
 ```
 
@@ -67,13 +67,13 @@ curl "https://admin.hackgate.io/api/analytics/getMostActiveUsers?url=my-site&gte
 ### GET /api/analytics/getPathDiscovery
 
 ```
-GET https://admin.hackgate.io/api/analytics/getPathDiscovery
+GET https://api-admin.hackgate.io/api/analytics/getPathDiscovery
 ```
 
 Returns the set of URL paths that researchers accessed on the target site during the time range, showing what endpoints have been explored.
 
 ```bash
-curl "https://admin.hackgate.io/api/analytics/getPathDiscovery?url=my-site&gte=2025-07-01T00:00:00Z&lte=2025-07-14T23:59:59Z" \
+curl "https://api-admin.hackgate.io/api/analytics/getPathDiscovery?url=my-site&gte=2025-07-01T00:00:00Z&lte=2025-07-14T23:59:59Z" \
   -H "Authorization: Bearer <token>"
 ```
 
@@ -83,13 +83,13 @@ curl "https://admin.hackgate.io/api/analytics/getPathDiscovery?url=my-site&gte=2
 ### GET /api/analytics/getTrafficTimeline
 
 ```
-GET https://admin.hackgate.io/api/analytics/getTrafficTimeline
+GET https://api-admin.hackgate.io/api/analytics/getTrafficTimeline
 ```
 
 Returns time-bucketed request counts for a single site, suitable for rendering a traffic chart over the selected period.
 
 ```bash
-curl "https://admin.hackgate.io/api/analytics/getTrafficTimeline?url=my-site&gte=2025-07-01T00:00:00Z&lte=2025-07-14T23:59:59Z" \
+curl "https://api-admin.hackgate.io/api/analytics/getTrafficTimeline?url=my-site&gte=2025-07-01T00:00:00Z&lte=2025-07-14T23:59:59Z" \
   -H "Authorization: Bearer <token>"
 ```
 
@@ -99,13 +99,13 @@ curl "https://admin.hackgate.io/api/analytics/getTrafficTimeline?url=my-site&gte
 ### GET /api/analytics/getTrafficTable
 
 ```
-GET https://admin.hackgate.io/api/analytics/getTrafficTable
+GET https://api-admin.hackgate.io/api/analytics/getTrafficTable
 ```
 
 Returns a tabular breakdown of traffic data for a single site, including per-user or per-path detail depending on the response shape.
 
 ```bash
-curl "https://admin.hackgate.io/api/analytics/getTrafficTable?url=my-site&gte=2025-07-01T00:00:00Z&lte=2025-07-14T23:59:59Z" \
+curl "https://api-admin.hackgate.io/api/analytics/getTrafficTable?url=my-site&gte=2025-07-01T00:00:00Z&lte=2025-07-14T23:59:59Z" \
   -H "Authorization: Bearer <token>"
 ```
 
@@ -124,7 +124,7 @@ Use these endpoints when you need aggregated traffic data across multiple HackGA
 ### POST /api/analytics/getSummaryTrafficTable
 
 ```
-POST https://admin.hackgate.io/api/analytics/getSummaryTrafficTable
+POST https://api-admin.hackgate.io/api/analytics/getSummaryTrafficTable
 ```
 
 Returns a tabular traffic summary aggregated across the sites you specify.
@@ -146,7 +146,7 @@ Returns a tabular traffic summary aggregated across the sites you specify.
 #### Example
 
 ```bash
-curl -X POST https://admin.hackgate.io/api/analytics/getSummaryTrafficTable \
+curl -X POST https://api-admin.hackgate.io/api/analytics/getSummaryTrafficTable \
   -H "Authorization: Bearer <token>" \
   -H "Content-Type: application/json" \
   -d '{
@@ -162,7 +162,7 @@ curl -X POST https://admin.hackgate.io/api/analytics/getSummaryTrafficTable \
 ### POST /api/analytics/getSummaryTimeline
 
 ```
-POST https://admin.hackgate.io/api/analytics/getSummaryTimeline
+POST https://api-admin.hackgate.io/api/analytics/getSummaryTimeline
 ```
 
 Returns a time-bucketed traffic timeline aggregated across multiple sites.
@@ -184,7 +184,7 @@ Returns a time-bucketed traffic timeline aggregated across multiple sites.
 #### Example
 
 ```bash
-curl -X POST https://admin.hackgate.io/api/analytics/getSummaryTimeline \
+curl -X POST https://api-admin.hackgate.io/api/analytics/getSummaryTimeline \
   -H "Authorization: Bearer <token>" \
   -H "Content-Type: application/json" \
   -d '{
