@@ -10,7 +10,7 @@ Use the Projects API to create security programs, update their metadata, and man
 Retrieve all projects for your organization.
 
 ```bash
-curl https://admin.hackgate.io/api/projects \
+curl https://api-admin.hackgate.io/api/projects \
   -H "Authorization: Bearer <token>"
 ```
 
@@ -21,7 +21,7 @@ curl https://admin.hackgate.io/api/projects \
     POST to `/api/projects` with a name and optional description, notes, and date range.
 
     ```bash
-    curl -X POST https://admin.hackgate.io/api/projects \
+    curl -X POST https://api-admin.hackgate.io/api/projects \
       -H "Authorization: Bearer <token>" \
       -H "Content-Type: application/json" \
       -d '{
@@ -43,7 +43,7 @@ curl https://admin.hackgate.io/api/projects \
 Project updates use a full-object replacement. Include all fields you want to retain, not just the ones you are changing.
 
 ```bash
-curl -X PUT https://admin.hackgate.io/api/projects \
+curl -X PUT https://api-admin.hackgate.io/api/projects \
   -H "Authorization: Bearer <token>" \
   -H "Content-Type: application/json" \
   -d '{
@@ -63,7 +63,7 @@ curl -X PUT https://admin.hackgate.io/api/projects \
 ## Get a single project
 
 ```bash
-curl https://admin.hackgate.io/api/projects/PROJECT_ID \
+curl https://api-admin.hackgate.io/api/projects/PROJECT_ID \
   -H "Authorization: Bearer <token>"
 ```
 
@@ -72,14 +72,14 @@ curl https://admin.hackgate.io/api/projects/PROJECT_ID \
 ### List all project items
 
 ```bash
-curl https://admin.hackgate.io/api/projects/getProjectItems \
+curl https://api-admin.hackgate.io/api/projects/getProjectItems \
   -H "Authorization: Bearer <token>"
 ```
 
 ### Get a single project item
 
 ```bash
-curl https://admin.hackgate.io/api/projects/getProjectItem/ITEM_ID \
+curl https://api-admin.hackgate.io/api/projects/getProjectItem/ITEM_ID \
   -H "Authorization: Bearer <token>"
 ```
 
@@ -88,7 +88,7 @@ curl https://admin.hackgate.io/api/projects/getProjectItem/ITEM_ID \
 Provide the item name and the `projectId` of the parent project.
 
 ```bash
-curl -X POST https://admin.hackgate.io/api/projects/createProjectItem \
+curl -X POST https://api-admin.hackgate.io/api/projects/createProjectItem \
   -H "Authorization: Bearer <token>" \
   -H "Content-Type: application/json" \
   -d '{"name": "Main Web Application", "projectId": "PROJECT_ID"}'
@@ -99,7 +99,7 @@ curl -X POST https://admin.hackgate.io/api/projects/createProjectItem \
 Use the item's `id` to set its type, access mode, and location.
 
 ```bash
-curl -X PUT https://admin.hackgate.io/api/projects/updateProjectItem \
+curl -X PUT https://api-admin.hackgate.io/api/projects/updateProjectItem \
   -H "Authorization: Bearer <token>" \
   -H "Content-Type: application/json" \
   -d '{

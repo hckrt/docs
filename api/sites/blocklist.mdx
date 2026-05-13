@@ -34,7 +34,7 @@ Returns the current block rule list for a site.
 ### Request
 
 ```
-GET https://admin.hackgate.io/api/sites/{id}/blocklist
+GET https://api-admin.hackgate.io/api/sites/{id}/blocklist
 ```
 
 #### Headers
@@ -60,7 +60,7 @@ GET https://admin.hackgate.io/api/sites/{id}/blocklist
 <RequestExample>
 
 ```bash cURL
-curl https://admin.hackgate.io/api/sites/a1b2c3d4-e5f6-7890-abcd-ef1234567890/blocklist \
+curl https://api-admin.hackgate.io/api/sites/a1b2c3d4-e5f6-7890-abcd-ef1234567890/blocklist \
   -H "Authorization: Bearer <token>"
 ```
 
@@ -89,7 +89,7 @@ This endpoint replaces all existing rules. Fetch the current list with `GET /api
 ### Request
 
 ```
-POST https://admin.hackgate.io/api/sites/blocklist
+POST https://api-admin.hackgate.io/api/sites/blocklist
 ```
 
 #### Headers
@@ -121,7 +121,7 @@ Returns `200` on success. Rules are applied at the proxy immediately.
 <RequestExample>
 
 ```bash Set rules
-curl -X POST https://admin.hackgate.io/api/sites/blocklist \
+curl -X POST https://api-admin.hackgate.io/api/sites/blocklist \
   -H "Authorization: Bearer <token>" \
   -H "Content-Type: application/json" \
   -d '{
@@ -131,7 +131,7 @@ curl -X POST https://admin.hackgate.io/api/sites/blocklist \
 ```
 
 ```bash Clear all rules
-curl -X POST https://admin.hackgate.io/api/sites/blocklist \
+curl -X POST https://api-admin.hackgate.io/api/sites/blocklist \
   -H "Authorization: Bearer <token>" \
   -H "Content-Type: application/json" \
   -d '{"siteId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890", "blockListJson": "[]"}'

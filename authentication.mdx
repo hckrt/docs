@@ -28,7 +28,7 @@ HackGATE supports two token types. The API automatically detects which method yo
     Retrieve your JWT from the Admin Center session (available in your browser's local storage or via the Clerk SDK). Use it as a Bearer token:
 
     ```bash
-    curl https://admin.hackgate.io/api/sites \
+    curl https://api-admin.hackgate.io/api/sites \
       -H "Authorization: Bearer eyJhbGciOiJSUzI1NiJ9..."
     ```
 
@@ -38,7 +38,7 @@ HackGATE supports two token types. The API automatically detects which method yo
     Generate an organization API key in the Admin Center under **Settings > API Keys**. API keys begin with `ak_live_`:
 
     ```bash
-    curl https://admin.hackgate.io/api/sites \
+    curl https://api-admin.hackgate.io/api/sites \
       -H "Authorization: Bearer ak_live_XXXXXXXXXXXX"
     ```
 

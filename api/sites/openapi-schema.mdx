@@ -12,7 +12,7 @@ Uploads an OpenAPI schema file for a site. The file is validated before being st
 ### Request
 
 ```
-POST https://admin.hackgate.io/api/sites/uploadOpenAPISchema
+POST https://api-admin.hackgate.io/api/sites/uploadOpenAPISchema
 ```
 
 This endpoint accepts a `multipart/form-data` body.
@@ -59,7 +59,7 @@ Returns `200` on success. No body is returned.
 <RequestExample>
 
 ```bash cURL
-curl -X POST https://admin.hackgate.io/api/sites/uploadOpenAPISchema \
+curl -X POST https://api-admin.hackgate.io/api/sites/uploadOpenAPISchema \
   -H "Authorization: Bearer <token>" \
   -F "file=@openapi.json;type=application/json" \
   -F "siteId=a1b2c3d4-e5f6-7890-abcd-ef1234567890"
@@ -91,7 +91,7 @@ Returns the stored OpenAPI schema for a site. The `servers` field in the returne
 ### Request
 
 ```
-GET https://admin.hackgate.io/api/sites/getAPIdefinition/{id}
+GET https://api-admin.hackgate.io/api/sites/getAPIdefinition/{id}
 ```
 
 #### Headers
@@ -117,7 +117,7 @@ GET https://admin.hackgate.io/api/sites/getAPIdefinition/{id}
 <RequestExample>
 
 ```bash cURL
-curl https://admin.hackgate.io/api/sites/getAPIdefinition/a1b2c3d4-e5f6-7890-abcd-ef1234567890 \
+curl https://api-admin.hackgate.io/api/sites/getAPIdefinition/a1b2c3d4-e5f6-7890-abcd-ef1234567890 \
   -H "Authorization: Bearer <token>"
 ```
 

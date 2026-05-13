@@ -11,7 +11,7 @@ Use these endpoints to modify existing projects and their associated items. `PUT
 ## PUT /api/projects
 
 ```
-PUT https://admin.hackgate.io/api/projects
+PUT https://api-admin.hackgate.io/api/projects
 ```
 
 Replaces an existing project record with the values you provide. Send the full project object — including all fields returned by `GET /api/projects/{id}` — with your changes applied. Omitting optional fields sets them to `null`.
@@ -107,7 +107,7 @@ Returns the updated project object.
 ### Example
 
 ```bash
-curl -X PUT https://admin.hackgate.io/api/projects \
+curl -X PUT https://api-admin.hackgate.io/api/projects \
   -H "Authorization: Bearer <token>" \
   -H "Content-Type: application/json" \
   -d '{
@@ -138,7 +138,7 @@ curl -X PUT https://admin.hackgate.io/api/projects \
 ## POST /api/projects/createProjectItem
 
 ```
-POST https://admin.hackgate.io/api/projects/createProjectItem
+POST https://api-admin.hackgate.io/api/projects/createProjectItem
 ```
 
 Adds a new item (a site or target) to an existing project. Items represent the individual in-scope assets for an engagement.
@@ -206,7 +206,7 @@ Returns the newly created project item object.
 ### Example
 
 ```bash
-curl -X POST https://admin.hackgate.io/api/projects/createProjectItem \
+curl -X POST https://api-admin.hackgate.io/api/projects/createProjectItem \
   -H "Authorization: Bearer <token>" \
   -H "Content-Type: application/json" \
   -d '{
@@ -235,7 +235,7 @@ curl -X POST https://admin.hackgate.io/api/projects/createProjectItem \
 ## PUT /api/projects/updateProjectItem
 
 ```
-PUT https://admin.hackgate.io/api/projects/updateProjectItem
+PUT https://api-admin.hackgate.io/api/projects/updateProjectItem
 ```
 
 Updates the metadata of an existing project item. Use this to set or change the item's name, access model, location, and type.
@@ -279,7 +279,7 @@ Returns the updated project item object.
 ### Example
 
 ```bash
-curl -X PUT https://admin.hackgate.io/api/projects/updateProjectItem \
+curl -X PUT https://api-admin.hackgate.io/api/projects/updateProjectItem \
   -H "Authorization: Bearer <token>" \
   -H "Content-Type: application/json" \
   -d '{

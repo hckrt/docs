@@ -21,7 +21,7 @@ This guide walks you through creating your first HackGATE site and sharing a pro
     Send a `POST` request to `/api/sites` with your origin URL as `originName`. HackGATE will provision a proxied subdomain for you.
 
     ```bash
-    curl -X POST https://admin.hackgate.io/api/sites \
+    curl -X POST https://api-admin.hackgate.io/api/sites \
       -H "Authorization: Bearer <your-token>" \
       -H "Content-Type: application/json" \
       -d '{"originName": "https://www.example.com"}'
@@ -52,7 +52,7 @@ This guide walks you through creating your first HackGATE site and sharing a pro
     Open the Admin Center dashboard to view real-time traffic analytics, or query the analytics API directly. For example, to get the most active researchers on your site:
 
     ```bash
-    curl "https://admin.hackgate.io/api/analytics/getMostActiveUsers?url=www-myorg.hackgate.io&gte=2024-06-01T00:00:00Z&lte=2024-06-30T23:59:59Z" \
+    curl "https://api-admin.hackgate.io/api/analytics/getMostActiveUsers?url=www-myorg.hackgate.io&gte=2024-06-01T00:00:00Z&lte=2024-06-30T23:59:59Z" \
       -H "Authorization: Bearer <your-token>"
     ```
 

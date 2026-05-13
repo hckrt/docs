@@ -8,7 +8,7 @@ Creates a new HackGATE site and begins provisioning the reverse proxy infrastruc
 ## Request
 
 ```
-POST https://admin.hackgate.io/api/sites
+POST https://api-admin.hackgate.io/api/sites
 ```
 
 ### Headers
@@ -113,7 +113,7 @@ After creation, `isDeploymentProgress` is `true` while HackGATE provisions the p
 <RequestExample>
 
 ```bash cURL
-curl -X POST https://admin.hackgate.io/api/sites \
+curl -X POST https://api-admin.hackgate.io/api/sites \
   -H "Authorization: Bearer <token>" \
   -H "Content-Type: application/json" \
   -d '{"originName": "https://www.example.com"}'

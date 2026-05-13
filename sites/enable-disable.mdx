@@ -10,7 +10,7 @@ Enabling a site makes the proxy subdomain live so researchers can connect. Disab
 Send a `GET` request to `/api/sites/enable/{id}`:
 
 ```bash
-curl https://admin.hackgate.io/api/sites/enable/SITE_ID \
+curl https://api-admin.hackgate.io/api/sites/enable/SITE_ID \
   -H "Authorization: Bearer <token>"
 ```
 
@@ -21,7 +21,7 @@ The site's `isActive` field becomes `true`. The activity log records a **Started
 Send a `GET` request to `/api/sites/disable/{id}`:
 
 ```bash
-curl https://admin.hackgate.io/api/sites/disable/SITE_ID \
+curl https://api-admin.hackgate.io/api/sites/disable/SITE_ID \
   -H "Authorization: Bearer <token>"
 ```
 

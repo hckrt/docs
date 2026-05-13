@@ -37,7 +37,7 @@ All WAF endpoints require a Bearer token in the `Authorization` header. Each end
 Returns the top 2,500 triggered ModSecurity rule messages ordered by frequency. Use this to identify the most commonly matched rules and the specific payloads researchers are sending.
 
 ```bash
-curl "https://admin.hackgate.io/api/analytics/getWAFMessages?url=www-myorg.hackgate.net&gte=2024-06-01T00:00:00Z&lte=2024-06-30T23:59:59Z" \
+curl "https://api-admin.hackgate.io/api/analytics/getWAFMessages?url=www-myorg.hackgate.net&gte=2024-06-01T00:00:00Z&lte=2024-06-30T23:59:59Z" \
   -H "Authorization: Bearer <token>"
 ```
 
@@ -46,7 +46,7 @@ curl "https://admin.hackgate.io/api/analytics/getWAFMessages?url=www-myorg.hackg
 Returns the total event count per attack category for the selected period.
 
 ```bash
-curl "https://admin.hackgate.io/api/analytics/getWAFAttackTypes?url=www-myorg.hackgate.net&gte=2024-06-01T00:00:00Z&lte=2024-06-30T23:59:59Z" \
+curl "https://api-admin.hackgate.io/api/analytics/getWAFAttackTypes?url=www-myorg.hackgate.net&gte=2024-06-01T00:00:00Z&lte=2024-06-30T23:59:59Z" \
   -H "Authorization: Bearer <token>"
 ```
 
@@ -59,7 +59,7 @@ curl "https://admin.hackgate.io/api/analytics/getWAFAttackTypes?url=www-myorg.ha
 Returns the count of WAF events over time, bucketed into 12-hour intervals. Use this to correlate spikes in attack activity with specific testing sessions.
 
 ```bash
-curl "https://admin.hackgate.io/api/analytics/getWAFSummaryRulesTimeline?url=www-myorg.hackgate.net&gte=2024-06-01T00:00:00Z&lte=2024-06-30T23:59:59Z" \
+curl "https://api-admin.hackgate.io/api/analytics/getWAFSummaryRulesTimeline?url=www-myorg.hackgate.net&gte=2024-06-01T00:00:00Z&lte=2024-06-30T23:59:59Z" \
   -H "Authorization: Bearer <token>"
 ```
 
@@ -68,6 +68,6 @@ curl "https://admin.hackgate.io/api/analytics/getWAFSummaryRulesTimeline?url=www
 Returns the attack type breakdown over time, split by site. Useful when you want to compare WAF activity across multiple HackGATE environments.
 
 ```bash
-curl "https://admin.hackgate.io/api/analytics/getWAFRulesTimeline?url=www-myorg.hackgate.net&gte=2024-06-01T00:00:00Z&lte=2024-06-30T23:59:59Z" \
+curl "https://api-admin.hackgate.io/api/analytics/getWAFRulesTimeline?url=www-myorg.hackgate.net&gte=2024-06-01T00:00:00Z&lte=2024-06-30T23:59:59Z" \
   -H "Authorization: Bearer <token>"
 ```

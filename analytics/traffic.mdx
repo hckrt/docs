@@ -26,7 +26,7 @@ Each endpoint accepts the same three query parameters:
 Returns the top 10 researchers ranked by total request count over the selected period.
 
 ```bash
-curl "https://admin.hackgate.io/api/analytics/getMostActiveUsers?url=www-myorg.hackgate.net&gte=2024-06-01T00:00:00Z&lte=2024-06-30T23:59:59Z" \
+curl "https://api-admin.hackgate.io/api/analytics/getMostActiveUsers?url=www-myorg.hackgate.net&gte=2024-06-01T00:00:00Z&lte=2024-06-30T23:59:59Z" \
   -H "Authorization: Bearer <token>"
 ```
 
@@ -35,7 +35,7 @@ curl "https://admin.hackgate.io/api/analytics/getMostActiveUsers?url=www-myorg.h
 Returns the total number of requests proxied through the site during the selected period.
 
 ```bash
-curl "https://admin.hackgate.io/api/analytics/getTotalRequest?url=www-myorg.hackgate.net&gte=2024-06-01T00:00:00Z&lte=2024-06-30T23:59:59Z" \
+curl "https://api-admin.hackgate.io/api/analytics/getTotalRequest?url=www-myorg.hackgate.net&gte=2024-06-01T00:00:00Z&lte=2024-06-30T23:59:59Z" \
   -H "Authorization: Bearer <token>"
 ```
 
@@ -44,7 +44,7 @@ curl "https://admin.hackgate.io/api/analytics/getTotalRequest?url=www-myorg.hack
 Returns the top 1,000 URL paths tested by researchers, ordered by request count. Use this to see which areas of your application researchers are targeting.
 
 ```bash
-curl "https://admin.hackgate.io/api/analytics/getPathDiscovery?url=www-myorg.hackgate.net&gte=2024-06-01T00:00:00Z&lte=2024-06-30T23:59:59Z" \
+curl "https://api-admin.hackgate.io/api/analytics/getPathDiscovery?url=www-myorg.hackgate.net&gte=2024-06-01T00:00:00Z&lte=2024-06-30T23:59:59Z" \
   -H "Authorization: Bearer <token>"
 ```
 
@@ -57,7 +57,7 @@ curl "https://admin.hackgate.io/api/analytics/getPathDiscovery?url=www-myorg.hac
 Returns per-user traffic over time using an automatic date histogram. Use this to visualize activity patterns across the testing period.
 
 ```bash
-curl "https://admin.hackgate.io/api/analytics/getTrafficTimeline?url=www-myorg.hackgate.net&gte=2024-06-01T00:00:00Z&lte=2024-06-30T23:59:59Z" \
+curl "https://api-admin.hackgate.io/api/analytics/getTrafficTimeline?url=www-myorg.hackgate.net&gte=2024-06-01T00:00:00Z&lte=2024-06-30T23:59:59Z" \
   -H "Authorization: Bearer <token>"
 ```
 
@@ -66,7 +66,7 @@ curl "https://admin.hackgate.io/api/analytics/getTrafficTimeline?url=www-myorg.h
 Returns a per-user hourly breakdown of request counts, suitable for tabular display.
 
 ```bash
-curl "https://admin.hackgate.io/api/analytics/getTrafficTable?url=www-myorg.hackgate.net&gte=2024-06-01T00:00:00Z&lte=2024-06-30T23:59:59Z" \
+curl "https://api-admin.hackgate.io/api/analytics/getTrafficTable?url=www-myorg.hackgate.net&gte=2024-06-01T00:00:00Z&lte=2024-06-30T23:59:59Z" \
   -H "Authorization: Bearer <token>"
 ```
 
@@ -77,7 +77,7 @@ If your program spans multiple HackGATE sites, use the summary endpoints to aggr
 **Summary table** — cross-site per-user request counts:
 
 ```bash
-curl -X POST https://admin.hackgate.io/api/analytics/getSummaryTrafficTable \
+curl -X POST https://api-admin.hackgate.io/api/analytics/getSummaryTrafficTable \
   -H "Authorization: Bearer <token>" \
   -H "Content-Type: application/json" \
   -d '{"urls": ["www-myorg.hackgate.net", "app-myorg.hackgate.net"], "gte": "2024-06-01T00:00:00Z", "lte": "2024-06-30T23:59:59Z"}'
@@ -86,7 +86,7 @@ curl -X POST https://admin.hackgate.io/api/analytics/getSummaryTrafficTable \
 **Summary timeline** — cross-site traffic over time:
 
 ```bash
-curl -X POST https://admin.hackgate.io/api/analytics/getSummaryTimeline \
+curl -X POST https://api-admin.hackgate.io/api/analytics/getSummaryTimeline \
   -H "Authorization: Bearer <token>" \
   -H "Content-Type: application/json" \
   -d '{"urls": ["www-myorg.hackgate.net", "app-myorg.hackgate.net"], "gte": "2024-06-01T00:00:00Z", "lte": "2024-06-30T23:59:59Z"}'
